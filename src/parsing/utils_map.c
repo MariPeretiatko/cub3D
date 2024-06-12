@@ -115,6 +115,7 @@ void check_all_init_params(t_map *map){
 t_data_list *check_last_map(t_map *map, t_data_list *dataList){
     t_data_list *last = ft_lstlast(dataList);
 
+    (void)map; //tmp
     while (!strcmp(last->string, "\n")){
         last = last->prev;
     }

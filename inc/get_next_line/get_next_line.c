@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 10:41:21 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/07 21:51:19 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:19:44 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "ft_printf.h"
-#include "../cub3d.h"
+// #include "../cub3d.h"
+#include "./gnl.h"
 static char	*ft_read(int fd, int *i)
 {
 	char	*buff;

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 10:41:19 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/07 21:51:37 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:19:37 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "ft_printf.h"
-#include "../cub3d.h"
+// #include "../cub3d.h"
+#include "./gnl.h"
 
 size_t	ft_strlen_gnl(const char *str)
 {

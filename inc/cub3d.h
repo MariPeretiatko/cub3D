@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/05/15 14:27:26 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:26:13 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
+#include "get_next_line/gnl.h"
+#include "../minilibx_linux/mlx.h"
+
 
 #define HEIGHT 800
 #define WIDTH 1024
-#define BUFFER_SIZE 100
 
 #define PI 3.14
 
@@ -120,12 +122,6 @@ void init_map(t_map *map, t_data_list *data);
 
 
 //delete
-size_t	ft_strlen_gnl(const char *str);
-char	*ft_strchr_gnl(const char *s, int c);
-char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin_gnl(char const *s1, char const *s2);
-
-char	*get_next_line(int fd);
 char	**ft_split(char const *s, char c);
 void print_data(char **data);
 void print_test(t_map *map);
