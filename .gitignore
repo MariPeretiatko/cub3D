@@ -1,5 +1,7 @@
 .vscode
+.idea
 /**/*.o
 /**/*.a
 cub3D
 a.out
+/**/*.cpp

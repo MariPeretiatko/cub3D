@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/12 22:26:13 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/06/15 00:04:11 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,39 @@
 #include "../minilibx_linux/mlx.h"
 
 
-#define HEIGHT 800
-#define WIDTH 1024
+# define MOVE_SPEED	0.02
+# define ROTATION_SPEED 0.02
+
+
+#  define KEY_W   119
+#  define KEY_A   97
+#  define KEY_S   115
+#  define KEY_D   100
+#  define KEY_ESC 65307
+#  define KEY_LEFT	65361
+#  define KEY_RIGHT	65363
+#  include <X11/keysym.h>
+
+
+#define HEIGHT 1024
+#define WIDTH 2048
 
 #define PI 3.14
 
-typedef struct s_data_list
+typedef struct s_dataList
 {
     char *string;
-    struct s_data_list *prev;
-    struct s_data_list *next;
-}t_data_list;
+    struct s_dataList *prev;
+    struct s_dataList *next;
+}t_dataList;
+
+typedef struct s_player
+{
+    double posX;
+    double posY;
+    
+}t_player;
+
 
 typedef struct s_map
 {
@@ -63,6 +85,24 @@ typedef struct s_map
     unsigned int color_floor;
     unsigned int color_ceiling;
 } t_map;
+
+typedef struct s_raycast
+{
+   double posX;
+   double posY;
+   double dirX;
+   double dirY;
+   double planeX;
+   double planeY;
+
+
+   
+   double time;
+   double oldTime;
+
+   
+}t_raycast;
+  
 
 typedef struct s_game
 {
@@ -88,19 +128,19 @@ void free_map(t_map *map);
 void valid_symbols(char **map);
 //bool valid_map(char **map);
 bool check_walls(char **map);
-bool is_wall_error(char **map, size_t x, int y);
+bool is_wall_error(char **map, int x, int y);
 bool check_corners(char **map);
 
 //dataList
-t_data_list	*ft_lstlast(t_data_list *lst);
-void	ft_lstadd_back(t_data_list **lst, t_data_list  *new);
-t_data_list 	*ft_lstnew(char *str);
-int	ft_lstsize(t_data_list  *start, t_data_list *end);
-void free_data_list(t_data_list *list);
+t_dataList	*ft_lstlast(t_dataList *lst);
+void	ft_lstadd_back(t_dataList **lst, t_dataList  *new);
+t_dataList 	*ft_lstnew(char *str);
+int	ft_lstsize(t_dataList  *start, t_dataList *end, int *cols);
+void free_data_list(t_dataList *list);
 
 //error
 void error_exit(char *mes);
-void print_data_list(t_data_list *data);
+void print_data_list(t_dataList *data);
 
 //global_utils
 void free_string_array(char** string_array);
@@ -112,12 +152,12 @@ char	*ft_strjoin(char const *s1, char const *s2); //? libft
 
 int	check_map_name(const char *av);
 void check_parameter(t_map *map, char **parameters);
-void init_parameter(t_map *map, t_data_list *data);
+void init_parameter(t_map *map, t_dataList *data);
 bool is_one_or_space(const char *str);
-t_data_list *check_start_map(t_map *map, t_data_list *data);
+t_dataList *check_start_map(t_map *map, t_dataList *data);
 //char**	read_map(char *path);
-t_data_list	*read_map(char *path);
-void init_map(t_map *map, t_data_list *data);
+t_dataList	*read_map(char *path);
+void init_map(t_map *map, t_dataList *data);
 
 
 

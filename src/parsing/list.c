@@ -1,159 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/14 23:11:55 by mperetia          #+#    #+#             */
+/*   Updated: 2024/06/15 00:00:06 by mperetia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/cub3d.h"
 
-//t_data_list	*ft_lstlast(t_data_list *lst)
-//{
-//    if (lst)
-//    {
-//        while (lst->next)
-//        {
-//            lst = lst->next;
-//        }
-//    }
-//    return (lst);
-//}
-//
-//void	ft_lstadd_back(t_data_list **lst, t_data_list  *new)
-//{
-//    if (!lst)
-//        return ;
-//    if (lst)
-//    {
-//        if (*lst)
-//        {
-//            ft_lstlast(*lst)->next = new;
-//            return ;
-//        }
-//    }
-//    *lst = new;
-//}
-//
-//t_data_list 	*ft_lstnew(char *str)
-//{
-//    t_data_list 	*new_obj;
-//
-//    new_obj = (t_data_list  *)malloc(sizeof(t_data_list ));
-//    if (new_obj)
-//    {
-//        new_obj->string = strdup(str);
-//        new_obj->next = NULL;
-//    }
-//    return (new_obj);
-//}
-//
-//int	ft_lstsize(t_data_list  *lst)
-//{
-//    int	i;
-//
-//    i = 0;
-//    while (lst)
-//    {
-//        lst = lst->next;
-//        i++;
-//    }
-//    return (i);
-//}
-//
-//void free_data_list(t_data_list *list) {
-//    t_data_list *temp;
-//    while (list) {
-//        temp = list;
-//        list = list->next;
-//        free(temp->string);
-//        free(temp);
-//    }
-//}
-
-t_data_list	*ft_lstlast(t_data_list *lst)
+t_dataList	*ft_lstlast(t_dataList *lst)
 {
-    if (lst)
-    {
-        while (lst->next)
-        {
-            lst = lst->next;
-        }
-    }
-    return (lst);
+	if (lst)
+	{
+		while (lst->next)
+		{
+			lst = lst->next;
+		}
+	}
+	return (lst);
 }
 
-void	ft_lstadd_back(t_data_list **lst, t_data_list  *new_list)
+void	ft_lstadd_back(t_dataList **lst, t_dataList *new_list)
 {
-    t_data_list	*tmp;
+	t_dataList	*tmp;
 
-    tmp = *lst;
-    if (*lst == NULL)
-    {
-        *lst = new_list;
-        return ;
-    }
-    while (tmp->next != NULL)
-        tmp = tmp->next;
-    new_list->prev = tmp;
-    tmp->next = new_list;
+	tmp = *lst;
+	if (*lst == NULL)
+	{
+		*lst = new_list;
+		return ;
+	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	new_list->prev = tmp;
+	tmp->next = new_list;
 }
 
-t_data_list 	*ft_lstnew(char *str)
+t_dataList	*ft_lstnew(char *str)
 {
-    t_data_list 	*new_obj;
+	t_dataList	*new_obj;
 
-    new_obj = (t_data_list  *)malloc(sizeof(t_data_list ));
-    if (new_obj)
-    {
-        new_obj->string = strdup(str);
-        new_obj->prev = NULL;
-        new_obj->next = NULL;
-    }
-    return (new_obj);
+	new_obj = (t_dataList *)malloc(sizeof(t_dataList));
+	if (new_obj)
+	{
+		new_obj->string = strdup(str);
+		new_obj->prev = NULL;
+		new_obj->next = NULL;
+	}
+	return (new_obj);
 }
 
-int	ft_lstsize(t_data_list  *start, t_data_list *end)
+int	ft_lstsize(t_dataList *start, t_dataList *end, int *cols)
 {
-    int	i;
+	int	i;
+	int	tmp;
 
-    i = 0;
-    while (start != end->next)
-    {
-        start = start->next;
-        i++;
-    }
-    return (i);
+	i = 0;
+	while (start != end->next)
+	{
+		tmp = strlen(start->string) - 1;
+		if (*cols < tmp)
+			*cols = tmp;
+		start = start->next;
+		i++;
+	}
+	return (i);
 }
 
-void free_data_list(t_data_list *head) {
-    t_data_list	*current;
-    t_data_list	*next;
+void	free_data_list(t_dataList *head)
+{
+	t_dataList	*current;
+	t_dataList	*next;
 
-    current = head;
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current->string);
-        free(current);
-        current = next;
-    }
+	current = head;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current->string);
+		free(current);
+		current = next;
+	}
 }
-
-//void ft_delete_node(t_data_list **list, t_data_list *node){
-//    if (list == NULL || *list == NULL || node == NULL) {
-//        return;
-//    }
-//
-//    // Если узел является головным
-//    if (*list == node) {
-//        *list = node->next;
-//    }
-//
-//    // Изменяем next, если узел не последний
-//    if (node->next != NULL) {
-//        node->next->prev = node->prev;
-//    }
-//
-//    // Изменяем prev, если узел не первый
-//    if (node->prev != NULL) {
-//        node->prev->next = node->next;
-//    }
-//
-//    // Освобождаем память, выделенную под данные и узел
-//    free(node->string);
-//    free(node);
-//}
-
