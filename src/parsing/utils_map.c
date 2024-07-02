@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:13:46 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/15 00:22:11 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:02:30 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,23 +115,25 @@ t_dataList	*read_map(char *path)
 {
 	char		*line;
 	int			fd;
-	t_dataList	*dataList;
+	t_dataList	*data_list;
 
-	dataList = NULL;
+	data_list = NULL;
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		error_exit("Could not open the file, check if the path is correct");
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
-		if (!dataList)
-			dataList = ft_lstnew(line);
+		if (!data_list)
+			data_list = ft_lstnew(line);
 		else
-			ft_lstadd_back(&dataList, ft_lstnew(line));
+			ft_lstadd_back(&data_list, ft_lstnew(line));
 		free(line);
+		line = get_next_line(fd);
 	}
 	if (close(fd) == -1)
 		error_exit("close");
-	return (dataList);
+	return (data_list);
 }
 
 void	check_all_init_params(t_map *map)
@@ -174,7 +176,7 @@ bool	error_color(char *rgb)
 	return (true);
 }
 
-void	init_colors(char *color_string)
+unsigned int	init_colors(char *color_string)
 {
 	char			**rgb;
 	unsigned int	colors[3];
@@ -194,6 +196,7 @@ void	init_colors(char *color_string)
 		}
 		i++;
 	}
+	return ((colors[0] << 16) | (colors[1] << 8) | colors[2]);
 }
 
 void	init_map(t_map *map, t_dataList *data)
@@ -206,8 +209,8 @@ void	init_map(t_map *map, t_dataList *data)
 	head = check_start_map(map, data);
 	init_parameter(map, data);
 	check_all_init_params(map);
-	init_colors(map->floor);
-	init_colors(map->ceiling);
+	map->color_floor = init_colors(map->floor);
+	map->color_ceiling = init_colors(map->ceiling);
 	i = 0;
 	map->rows = ft_lstsize(head, last, &map->cols);
 	map->map = (char **)malloc((map->rows + 1) * sizeof(char *));
