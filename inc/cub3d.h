@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/02 11:18:50 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:52:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <unistd.h>
 #  include <X11/X.h>
 
+#define PINK 0xffc0cb
 #define BLUE 0x0100fa
 #define GREEN 0x00fa01
 #define RED 0xfa0100
@@ -35,8 +36,8 @@
 #define FL 0xa9a9a9
 #define CEAL 0xf5f5f5
 
-# define MOVE_SPEED 0.06
-# define ROTATION_SPEED 0.03
+# define MOVE_SPEED 0.3
+# define ROTATION_SPEED 0.2
 
 # define SCREEN_WIDTH 2048
 # define SCREEN_HEIGHT 1024
@@ -83,6 +84,21 @@ typedef struct s_map
 	unsigned int		color_ceiling;
 }						t_map;
 
+typedef struct s_texture
+{
+	int					width;
+	int					height;
+	unsigned char		*pixels;
+}						t_texture;
+typedef struct s_image
+{
+	void				*img;
+	char				*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
+}						t_image;
+
 typedef struct s_player
 {
 	char				direction;
@@ -92,24 +108,7 @@ typedef struct s_player
 	double				dir_y;
 	double				plane_x;
 	double				plane_y;
-
 }						t_player;
-
-typedef struct s_texture
-{
-	int					width;
-	int					height;
-	unsigned char		*pixels;
-}						t_texture;
-
-typedef struct s_image
-{
-	void				*img;
-	char				*addr;
-	int					bits_per_pixel;
-	int					line_length;
-	int					endian;
-}						t_image;
 
 typedef struct s_raycast
 {

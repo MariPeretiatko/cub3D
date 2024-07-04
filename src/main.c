@@ -26,10 +26,9 @@ void	init_position_charactor(t_game *game)
 			if (valid_symbol_character(game->map->map[i][j]))
 			{
 				game->player.direction = game->map->map[i][j];
-				game->player.pos_x = j;
-				game->player.pos_y = i;
-				// game->player.pos_x = j - 0.5;
-				// game->player.pos_y = i - 0.5;
+				game->map->map[i][j] = '0';
+				game->player.pos_x = i + 0.5;
+				game->player.pos_y = j + 0.5;
 			}
 			j++;
 		}
@@ -37,37 +36,31 @@ void	init_position_charactor(t_game *game)
 	}
 }
 
-void load_textures(t_game *game);
 
 void add_plane_characters(t_game *game)
 {
-	// char plane = game->player.direction;
-	game->player.dir_x = -1;
-    game->player.dir_y = 0;
-    game->player.plane_x = 0;
-    game->player.plane_y = 0.66;
-	// if(plane == 'S')
-	// {
-	// 	game->player.dir_x = -1;
-	// 	game->player.dir_y = 0;
-	// 	game->player.plane_x = 0;
-	// 	game->player.plane_y = 0.66;
-	// }
-	// else if(plane == 'N')
-	// {
-	// 	game->player.plane_y = -1;
-	// 	game->player.dir_x = -0.66;
-	// }
-	// else if(plane == 'E')
-	// {
-	// 	game->player.dir_x = 1;
-	// 	game->player.plane_y = -0.66;
-	// }
-	// else if(plane == 'S')
-	// {
-	// 	game->player.dir_y = 1;
-	// 	game->player.plane_x = 0.66;
-	// }
+	char plane = game->player.direction;
+	if(plane == 'S')
+	{
+		game->player.dir_y = 1;
+		game->player.plane_x = 0.66;
+	}
+	else if(plane == 'N')
+	{
+		game->player.dir_x = -1;
+		game->player.plane_y = -0.66;
+	}
+	else if(plane == 'E')
+	{
+		game->player.dir_x = 1;
+		game->player.plane_y = -0.66;
+	}
+	else if(plane == 'W')
+	{
+		game->player.dir_x = -1;
+    	game->player.plane_y = 0.66;
+		
+	}
 }
 
 void	draw_floor_and_ceiling(t_game *game)
@@ -85,7 +78,7 @@ void	draw_floor_and_ceiling(t_game *game)
 }
 
 
-void render(t_game *game) {
+int render(t_game *game) {
     draw_floor_and_ceiling(game);
 
     for (int x = 0; x < SCREEN_WIDTH; x++) {
@@ -131,7 +124,7 @@ void render(t_game *game) {
                 game->rc.map_y += game->rc.step_y;
                 game->rc.side = 1;
             }
-            if (game->map->map[game->rc.map_x][game->rc.map_y] > 0)
+            if (game->map->map[game->rc.map_x][game->rc.map_y] > '0')
                 game->rc.hit = 1;
         }
 
@@ -149,37 +142,75 @@ void render(t_game *game) {
         if (drawEnd >= SCREEN_HEIGHT)
             drawEnd = SCREEN_HEIGHT - 1;
 
-        int color = (game->rc.side == 1) ? RED : BLUE;
+
+		int color;
+   		if (game->rc.side == 0)
+		{
+	        if (game->rc.raydir_x > 0)
+	            color = PINK; //EAST_COLOR восток
+			else
+            	color = GREEN; //WEST_COLOR запад
+        }
+    	else 
+		{
+        	if (game->rc.raydir_y > 0) 
+            	color = RED; //SOUTH_COLOR юг
+        	else 
+            	color = YELLOW; // NORTH_COLOR север
+        
+    	}
+        // int color = (game->rc.side == 1) ? GREEN : YELLOW;
 
         for (int y = drawStart; y < drawEnd; y++) {
             my_mlx_pixel_put(&game->back, x, y, color);
         }
     }
-
-    // mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
+	return 0;
 }
 
 int	key_hook(int keycode, t_game *game)
 {
-	if (keycode == 65307)
+	// print_data(game->map->map);
+	printf("game->player.pos_x = %f\n", game->player.pos_x);
+	printf("game->player.pos_y = %f\n", game->player.pos_y);
+
+
+    if (keycode == 65307) // ESC key
         exit(0);
-    // double moveSpeed = 0.3;
-    // double rotSpeed = 0.2;
     if (keycode == KEY_W) { 
+		write(1, "\nKEY_W\n", 7);
         game->pressed.W = true;
-        if(game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == 0) 
-			game->player.pos_x += game->player.dir_x * MOVE_SPEED;
-        if(game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == 0) 
-			game->player.pos_y += game->player.pos_y * MOVE_SPEED;
+        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
+        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
+            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
     }
-    if (keycode == KEY_S) {
+	if (keycode == KEY_S) {
+		write(1, "\nKEY_S\n", 7);
         game->pressed.S = true;
-        if(game->map->map[(int)(game->player.pos_x - game->player.dir_x* MOVE_SPEED)][(int)game->player.pos_y] == 0) 
-			game->player.pos_x -= game->player.pos_x * MOVE_SPEED;
-        if(game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y - game->player.dir_y * MOVE_SPEED)] == 0) 
-			game->player.pos_y -= game->player.pos_y * MOVE_SPEED;
+        if (game->map->map[(int)(game->player.pos_x - game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0')
+            game->player.pos_x -= game->player.dir_x * MOVE_SPEED;
+        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y - game->player.dir_y * MOVE_SPEED)] == '0')
+            game->player.pos_y -= game->player.dir_y * MOVE_SPEED;
     }
-    if (keycode == KEY_RIGHT) { // Right arrow
+	if (keycode == KEY_A) { 
+		write(1, "\nKEY_A\n", 7);
+        game->pressed.A = true;
+        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
+        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
+            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+    }
+	if (keycode == KEY_D) { 
+		write(1, "\nKEY_D\n", 7);
+        game->pressed.D = true;
+        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
+        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
+            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+    }
+	if (keycode == KEY_RIGHT) { // Right arrow.
+		write(1, "\nKEY_RIGHT\n", 11);
         game->pressed.right = true;
         double old_dir_x = game->player.dir_x;
         game->player.dir_x = game->player.dir_x * cos(-ROTATION_SPEED) - game->player.dir_y * sin(-ROTATION_SPEED);
@@ -187,16 +218,20 @@ int	key_hook(int keycode, t_game *game)
         double old_plane_x = game->player.plane_x;
         game->player.plane_x = game->player.plane_x * cos(-ROTATION_SPEED) - game->player.plane_y * sin(-ROTATION_SPEED);
         game->player.plane_y = old_plane_x * sin(-ROTATION_SPEED) + game->player.plane_y * cos(-ROTATION_SPEED);
+
     }
-    if (keycode == KEY_LEFT) { // Left arrow
+	if (keycode == KEY_LEFT) { // Left arrow
+		write(1, "\nKEY_LEFT\n", 10);
         game->pressed.left = true;
         double old_dir_x = game->player.dir_x;
         game->player.dir_x = game->player.dir_x * cos(ROTATION_SPEED) - game->player.dir_y * sin(ROTATION_SPEED);
         game->player.dir_y = old_dir_x * sin(ROTATION_SPEED) + game->player.dir_y * cos(ROTATION_SPEED);
         double old_plane_x = game->player.plane_x;
-        game->player.plane_x = game->player.plane_x * cos(ROTATION_SPEED) - game->player.dir_y * sin(ROTATION_SPEED);
-        game->player.dir_y = old_plane_x * sin(ROTATION_SPEED) + game->player.dir_y * cos(ROTATION_SPEED);
+        game->player.plane_x = game->player.plane_x * cos(ROTATION_SPEED) - game->player.plane_y * sin(ROTATION_SPEED);
+        game->player.plane_y = old_plane_x * sin(ROTATION_SPEED) + game->player.plane_y * cos(ROTATION_SPEED);
     }
+	printf("game->player.pos_x = %f\n", game->player.pos_x);
+	printf("game->player.pos_y = %f\n", game->player.pos_y);
     mlx_clear_window(game->mlx, game->mlx_win);
     render(game);
     return (0);
@@ -207,8 +242,8 @@ int	key_action(int keycode, t_game *game)
 	if (KEY_A == keycode || KEY_LEFT == keycode || KEY_D == keycode
 		|| KEY_RIGHT == keycode || KEY_W == keycode || KEY_S == keycode
 		|| KEY_ESC == keycode)
-		key_hook(keycode, game);
-	return (0);
+			key_hook(keycode, game);
+		return (0);
 }
 
 // int main_show(t_game *game)
@@ -225,6 +260,10 @@ int key_release_hook(int keycode, t_game *game){
     if (keycode == KEY_W && game->pressed.W)
         game->pressed.W = false;
     if(keycode == KEY_S && game->pressed.S)
+		game->pressed.S = false;
+	if(keycode == KEY_A && game->pressed.W)
+		game->pressed.A = false;
+    if(keycode == KEY_D && game->pressed.S)
         game->pressed.S = false;
     if(keycode == KEY_LEFT && game->pressed.left)
         game->pressed.left = false;
@@ -233,24 +272,46 @@ int key_release_hook(int keycode, t_game *game){
     return (0);
 }
 
+
 void	init_game(t_map *map)
 {
 	t_game	*game;
 
 	game = calloc(1, sizeof(t_game));
+	if (!game) {
+        fprintf(stderr, "Failed to allocate memory for game\n");
+        exit(1);
+    }
 	game->map = map;
+    if (!game->map) {
+        fprintf(stderr, "Map is null\n");
+        free(game);
+        exit(1);
+    }
+	printf("%c\n", game->map->map[3][2]);
 	game->mlx = mlx_init();
-	game->mlx_win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT + 20, "cub3D");
+	game->mlx_win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
 	game->back.img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->back.addr = mlx_get_data_addr(game->back.img,
 			&game->back.bits_per_pixel,
 			&game->back.line_length, &game->back.endian);
+	// print_data(game->map->map);
+	// print_data(map->map);
+	// init_game_rc(game);
+	// printf("%c\n", game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y]);
 	// print_map_game(game, map);
 	init_position_charactor(game);
 	add_plane_characters(game);
-	render(game);
 
-    mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, &game);
+	// print_data(game->map->map);
+	
+	render(game);
+	// print_data(game->map->map);
+
+	// mlx_loop_hook(game->mlx_win, render, game);
+    // mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
+
+    mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, game);
     mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook, &game);
 	// mlx_loop_hook(game->mlx, main_show, game);
 	// // init_raycast(game);
