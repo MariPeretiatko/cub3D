@@ -74,7 +74,6 @@ void	draw_floor_and_ceiling(t_game *game)
 	i = SCREEN_WIDTH * SCREEN_HEIGHT / 2 + 1;
 	while (--i > 0)
 		*dst++ = game->map->color_floor;
-    mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
 }
 
 
@@ -165,6 +164,8 @@ int render(t_game *game) {
             my_mlx_pixel_put(&game->back, x, y, color);
         }
     }
+    mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
+
 	return 0;
 }
 
