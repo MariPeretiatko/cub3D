@@ -1,5 +1,6 @@
 #include "../inc/cub3d.h"
 
+bool moves_execute(t_game *game);
 
 void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
 {
@@ -90,7 +91,6 @@ int render(t_game *game) {
 
         game->rc.delta_dist_x = fabs(1 / game->rc.raydir_x);
         game->rc.delta_dist_y = fabs(1 / game->rc.raydir_y);
-        // data->raycast.perp_wall_dist;
 
         if (game->rc.raydir_x < 0) {
             game->rc.step_x = -1;
@@ -110,7 +110,6 @@ int render(t_game *game) {
         }
 
         game->rc.hit = 0;
-        // data->raycast.side;
 
         while (game->rc.hit == 0) {
             if (game->rc.side_dist_x < game->rc.side_dist_y) {
@@ -158,92 +157,189 @@ int render(t_game *game) {
             	color = YELLOW; // NORTH_COLOR север
         
     	}
-        // int color = (game->rc.side == 1) ? GREEN : YELLOW;
-
         for (int y = drawStart; y < drawEnd; y++) {
             my_mlx_pixel_put(&game->back, x, y, color);
         }
     }
+	moves_execute(game);
     mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
 
 	return 0;
 }
 
+int check_cardinal_directions(t_game *game)
+{
+	if (game->rc.side == 0)
+		{
+	        if (game->rc.raydir_x > 0)
+	            return (EAST); //EAST_COLOR восток
+			else
+            	return (WEST); //WEST_COLOR запад
+        }
+    	else 
+		{
+        	if (game->rc.raydir_y > 0) 
+            	return (SOUTH); //SOUTH_COLOR юг
+        	else 
+            	return (NORTH); // NORTH_COLOR север
+    	}
+}
+
+void move_front(t_game *game)
+{
+	// game->pressed.W = true;
+    if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+        game->player.pos_x += game->player.dir_x * MOVE_SPEED;
+    if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
+        game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+}
+
+void move_back(t_game *game)
+{
+	// game->pressed.S = true;
+     if (game->map->map[(int)(game->player.pos_x - game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0')
+         game->player.pos_x -= game->player.dir_x * MOVE_SPEED;
+     if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y - game->player.dir_y * MOVE_SPEED)] == '0')
+         game->player.pos_y -= game->player.dir_y * MOVE_SPEED;
+}
+
+void rotate_right(t_game *game)
+{
+	// game->pressed.right = true;
+    double old_dir_x = game->player.dir_x;
+    game->player.dir_x = game->player.dir_x * cos(-ROTATION_SPEED) - game->player.dir_y * sin(-ROTATION_SPEED);
+    game->player.dir_y = old_dir_x * sin(-ROTATION_SPEED) + game->player.dir_y * cos(-ROTATION_SPEED);
+    double old_plane_x = game->player.plane_x;
+    game->player.plane_x = game->player.plane_x * cos(-ROTATION_SPEED) - game->player.plane_y * sin(-ROTATION_SPEED);
+    game->player.plane_y = old_plane_x * sin(-ROTATION_SPEED) + game->player.plane_y * cos(-ROTATION_SPEED);
+}
+
+void rotate_left(t_game *game)
+{
+	// game->pressed.left = true;
+	double old_dir_x = game->player.dir_x;
+	game->player.dir_x = game->player.dir_x * cos(ROTATION_SPEED) - game->player.dir_y * sin(ROTATION_SPEED);
+	game->player.dir_y = old_dir_x * sin(ROTATION_SPEED) + game->player.dir_y * cos(ROTATION_SPEED);
+	double old_plane_x = game->player.plane_x;
+	game->player.plane_x = game->player.plane_x * cos(ROTATION_SPEED) - game->player.plane_y * sin(ROTATION_SPEED);
+	game->player.plane_y = old_plane_x * sin(ROTATION_SPEED) + game->player.plane_y * cos(ROTATION_SPEED);
+}
+
+void move_left(t_game *game)
+{
+	if (game->map->map[(int)(game->player.pos_x - game->player.plane_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+        game->player.pos_x -= game->player.plane_x * MOVE_SPEED;
+    if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y - game->player.plane_y * MOVE_SPEED)] == '0') 
+        game->player.pos_y -= game->player.plane_y * MOVE_SPEED;
+}
+
+void move_right(t_game *game)
+{
+	if (game->map->map[(int)(game->player.pos_x + game->player.plane_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
+        game->player.pos_x += game->player.plane_x * MOVE_SPEED;
+    if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.plane_y * MOVE_SPEED)] == '0') 
+        game->player.pos_y += game->player.plane_y * MOVE_SPEED;
+}
+
 int	key_hook(int keycode, t_game *game)
 {
 	// print_data(game->map->map);
-	printf("game->player.pos_x = %f\n", game->player.pos_x);
-	printf("game->player.pos_y = %f\n", game->player.pos_y);
+	// printf("game->player.pos_x = %f\n", game->player.pos_x);
+	// printf("game->player.pos_y = %f\n", game->player.pos_y);
 
 
     if (keycode == 65307) // ESC key
         exit(0);
     if (keycode == KEY_W) { 
 		write(1, "\nKEY_W\n", 7);
-        game->pressed.W = true;
-        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
-            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
-        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
-            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+		game->pressed.W = true;
+        // move_front(game);
     }
 	if (keycode == KEY_S) {
 		write(1, "\nKEY_S\n", 7);
-        game->pressed.S = true;
-        if (game->map->map[(int)(game->player.pos_x - game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0')
-            game->player.pos_x -= game->player.dir_x * MOVE_SPEED;
-        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y - game->player.dir_y * MOVE_SPEED)] == '0')
-            game->player.pos_y -= game->player.dir_y * MOVE_SPEED;
+		game->pressed.S = true;
+        // move_back(game);
     }
 	if (keycode == KEY_A) { 
 		write(1, "\nKEY_A\n", 7);
         game->pressed.A = true;
-        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
-            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
-        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
-            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+		// move_left(game);
+
     }
 	if (keycode == KEY_D) { 
 		write(1, "\nKEY_D\n", 7);
         game->pressed.D = true;
-        if (game->map->map[(int)(game->player.pos_x + game->player.dir_x * MOVE_SPEED)][(int)game->player.pos_y] == '0') 
-            game->player.pos_x += game->player.dir_x * MOVE_SPEED;
-        if (game->map->map[(int)game->player.pos_x][(int)(game->player.pos_y + game->player.dir_y * MOVE_SPEED)] == '0') 
-            game->player.pos_y += game->player.dir_y * MOVE_SPEED;
+		// move_rigth(game);
+
     }
 	if (keycode == KEY_RIGHT) { // Right arrow.
 		write(1, "\nKEY_RIGHT\n", 11);
-        game->pressed.right = true;
-        double old_dir_x = game->player.dir_x;
-        game->player.dir_x = game->player.dir_x * cos(-ROTATION_SPEED) - game->player.dir_y * sin(-ROTATION_SPEED);
-        game->player.dir_y = old_dir_x * sin(-ROTATION_SPEED) + game->player.dir_y * cos(-ROTATION_SPEED);
-        double old_plane_x = game->player.plane_x;
-        game->player.plane_x = game->player.plane_x * cos(-ROTATION_SPEED) - game->player.plane_y * sin(-ROTATION_SPEED);
-        game->player.plane_y = old_plane_x * sin(-ROTATION_SPEED) + game->player.plane_y * cos(-ROTATION_SPEED);
+		game->pressed.right = true;
+		// rotate_right(game);
 
     }
 	if (keycode == KEY_LEFT) { // Left arrow
 		write(1, "\nKEY_LEFT\n", 10);
-        game->pressed.left = true;
-        double old_dir_x = game->player.dir_x;
-        game->player.dir_x = game->player.dir_x * cos(ROTATION_SPEED) - game->player.dir_y * sin(ROTATION_SPEED);
-        game->player.dir_y = old_dir_x * sin(ROTATION_SPEED) + game->player.dir_y * cos(ROTATION_SPEED);
-        double old_plane_x = game->player.plane_x;
-        game->player.plane_x = game->player.plane_x * cos(ROTATION_SPEED) - game->player.plane_y * sin(ROTATION_SPEED);
-        game->player.plane_y = old_plane_x * sin(ROTATION_SPEED) + game->player.plane_y * cos(ROTATION_SPEED);
+		game->pressed.left = true;
+        // rotate_left(game);
     }
-	printf("game->player.pos_x = %f\n", game->player.pos_x);
-	printf("game->player.pos_y = %f\n", game->player.pos_y);
-    mlx_clear_window(game->mlx, game->mlx_win);
-    render(game);
+
+	// printf("key_hook\n");
+
+	// printf("game->player.pos_x = %f\n", game->player.pos_x);
+	// printf("game->player.pos_y = %f\n", game->player.pos_y);
+    // mlx_clear_window(game->mlx, game->mlx_win);
+    // render(game);
+
     return (0);
+}
+
+int key_release_hook(int keycode, t_game *game){
+    if (keycode == KEY_W && game->pressed.W)
+        game->pressed.W = false;
+    if(keycode == KEY_S && game->pressed.S)
+		game->pressed.S = false;
+	if(keycode == KEY_A && game->pressed.A)
+		game->pressed.A = false;
+    if(keycode == KEY_D && game->pressed.D)
+        game->pressed.D = false;
+    if(keycode == KEY_LEFT && game->pressed.left)
+		game->pressed.left = false;
+	if(keycode == KEY_RIGHT && game->pressed.right)
+		game->pressed.right = false;
+
+	printf("key_release_hook\n");
+    return (0);
+}
+
+bool moves_execute(t_game *game)
+{
+	if (game->pressed.W)
+        move_front(game);
+    if(game->pressed.S)
+		move_back(game);
+	if(game->pressed.A)
+		move_left(game);
+    if(game->pressed.D)
+        move_right(game);
+    if(game->pressed.left)
+		rotate_left(game);
+	if(game->pressed.right)
+		rotate_right(game);
+	return true;
 }
 
 int	key_action(int keycode, t_game *game)
 {
-	if (KEY_A == keycode || KEY_LEFT == keycode || KEY_D == keycode
-		|| KEY_RIGHT == keycode || KEY_W == keycode || KEY_S == keycode
-		|| KEY_ESC == keycode)
+	// if (KEY_A == keycode || KEY_LEFT == keycode || KEY_D == keycode
+		// || KEY_RIGHT == keycode || KEY_W == keycode || KEY_S == keycode
+		// || KEY_ESC == keycode)
+		// {
 			key_hook(keycode, game);
+			
+			// moves_execute(game);
+			// key_release_hook(keycode, game);
+		// }
 		return (0);
 }
 
@@ -257,21 +353,6 @@ int	key_action(int keycode, t_game *game)
 // 	return (0);
 // }
 
-int key_release_hook(int keycode, t_game *game){
-    if (keycode == KEY_W && game->pressed.W)
-        game->pressed.W = false;
-    if(keycode == KEY_S && game->pressed.S)
-		game->pressed.S = false;
-	if(keycode == KEY_A && game->pressed.W)
-		game->pressed.A = false;
-    if(keycode == KEY_D && game->pressed.S)
-        game->pressed.S = false;
-    if(keycode == KEY_LEFT && game->pressed.left)
-        game->pressed.left = false;
-    if(keycode == KEY_RIGHT && game->pressed.right)
-        game->pressed.right = false;
-    return (0);
-}
 
 
 void	init_game(t_map *map)
@@ -289,7 +370,6 @@ void	init_game(t_map *map)
         free(game);
         exit(1);
     }
-	printf("%c\n", game->map->map[3][2]);
 	game->mlx = mlx_init();
 	game->mlx_win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
 	game->back.img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -306,14 +386,16 @@ void	init_game(t_map *map)
 
 	// print_data(game->map->map);
 	
-	render(game);
 	// print_data(game->map->map);
 
 	// mlx_loop_hook(game->mlx_win, render, game);
     // mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);
 
+	// render(game);
+	mlx_loop_hook(game->mlx, render, game);
     mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, game);
-    mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook, &game);
+    mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook, game);
+	// mlx_hook(game->mlx_win, 17, 1L << 0, exit_game, game);
 	// mlx_loop_hook(game->mlx, main_show, game);
 	// // init_raycast(game);
 	// mlx_key_hook(game->mlx_win, key_action, game);

@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/04 19:52:50 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/06 22:50:25 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 #define FL 0xa9a9a9
 #define CEAL 0xf5f5f5
 
-# define MOVE_SPEED 0.3
-# define ROTATION_SPEED 0.2
+# define MOVE_SPEED 0.02
+# define ROTATION_SPEED 0.018
 
 # define SCREEN_WIDTH 2048
 # define SCREEN_HEIGHT 1024
@@ -60,6 +60,13 @@
 # include <X11/keysym.h>
 
 # define PI 3.14
+
+enum Cardinal {
+  EAST = 0,
+  WEST,
+  SOUTH,
+  NORTH
+};
 
 typedef struct s_dataList
 {
@@ -148,6 +155,7 @@ typedef struct s_game
 	t_raycast			rc;
 	t_image				back;
 	t_pressed 			pressed;
+	t_image 			walls[4];
 }						t_game;
 
 // free data
