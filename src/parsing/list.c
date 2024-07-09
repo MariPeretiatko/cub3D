@@ -3,28 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:11:55 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/15 00:00:06 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:58:08 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-t_dataList	*ft_lstlast(t_dataList *lst)
+t_dataList	*ft_dbl_lstlast(t_dataList *lst)
 {
 	if (lst)
 	{
 		while (lst->next)
-		{
 			lst = lst->next;
-		}
 	}
 	return (lst);
 }
 
-void	ft_lstadd_back(t_dataList **lst, t_dataList *new_list)
+void	ft_dbl_lstadd_back(t_dataList **lst, t_dataList *new_list)
 {
 	t_dataList	*tmp;
 
@@ -40,7 +38,7 @@ void	ft_lstadd_back(t_dataList **lst, t_dataList *new_list)
 	tmp->next = new_list;
 }
 
-t_dataList	*ft_lstnew(char *str)
+t_dataList	*ft_dbl_lstnew(char *str)
 {
 	t_dataList	*new_obj;
 
@@ -54,7 +52,7 @@ t_dataList	*ft_lstnew(char *str)
 	return (new_obj);
 }
 
-int	ft_lstsize(t_dataList *start, t_dataList *end, int *cols)
+int	ft_dbl_lstsize(t_dataList *start, t_dataList *end, int *cols)
 {
 	int	i;
 	int	tmp;

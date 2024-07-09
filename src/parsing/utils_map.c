@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:13:46 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/17 21:02:30 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:00:59 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ t_dataList	*read_map(char *path)
 	while (line != NULL)
 	{
 		if (!data_list)
-			data_list = ft_lstnew(line);
+			data_list = ft_dbl_lstnew(line);
 		else
-			ft_lstadd_back(&data_list, ft_lstnew(line));
+			ft_dbl_lstadd_back(&data_list, ft_dbl_lstnew(line));
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -147,7 +147,7 @@ t_dataList	*check_last_map(t_dataList *dataList)
 {
 	t_dataList	*last;
 
-	last = ft_lstlast(dataList);
+	last = ft_dbl_lstlast(dataList);
 	while (!strcmp(last->string, "\n"))
 	{
 		last = last->prev;
@@ -155,10 +155,10 @@ t_dataList	*check_last_map(t_dataList *dataList)
 	return (last);
 }
 
-bool	ft_isdigit(char c)
-{
-	return ('0' <= c && c <= '9');
-}
+// bool	ft_isdigit(char c)
+// {
+// 	return ('0' <= c && c <= '9');
+// }
 
 bool	error_color(char *rgb)
 {
@@ -212,7 +212,7 @@ void	init_map(t_map *map, t_dataList *data)
 	map->color_floor = init_colors(map->floor);
 	map->color_ceiling = init_colors(map->ceiling);
 	i = 0;
-	map->rows = ft_lstsize(head, last, &map->cols);
+	map->rows = ft_dbl_lstsize(head, last, &map->cols);
 	map->map = (char **)malloc((map->rows + 1) * sizeof(char *));
 	while (head != last->next)
 	{

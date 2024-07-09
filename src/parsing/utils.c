@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/15 00:48:03 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:00:13 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,24 @@ char	*remove_symb(char *input_string, char symb)
 	return (new_string);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str;
-	int		len;
-	int		i;
-	int		j;
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+// 	char	*str;
+// 	int		len;
+// 	int		i;
+// 	int		j;
 
-	len = (int)ft_strlen_gnl(s1) + ft_strlen_gnl(s2);
-	str = malloc((len + 1) * sizeof(char));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[j++] = s2[i++];
-	str[j] = '\0';
-	return (str);
-}
+// 	len = (int)ft_strlen_gnl(s1) + ft_strlen_gnl(s2);
+// 	str = malloc((len + 1) * sizeof(char));
+// 	if (str == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	j = 0;
+// 	while (s1[i])
+// 		str[j++] = s1[i++];
+// 	i = 0;
+// 	while (s2[i])
+// 		str[j++] = s2[i++];
+// 	str[j] = '\0';
+// 	return (str);
+// }
