@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/06 22:50:25 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/08 22:40:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@
 # define MOVE_SPEED 0.02
 # define ROTATION_SPEED 0.018
 
-# define SCREEN_WIDTH 2048
-# define SCREEN_HEIGHT 1024
+# define SCREEN_WIDTH 1800
+# define SCREEN_HEIGHT 1000
 
-# define texWidth 64
-# define texHeight 64
+# define texWidth 512
+# define texHeight 512
 
 # define KEY_W 119
 # define KEY_A 97
@@ -104,6 +104,8 @@ typedef struct s_image
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
+	int     width;
+    int     height;
 }						t_image;
 
 typedef struct s_player
