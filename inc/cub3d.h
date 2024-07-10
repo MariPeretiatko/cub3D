@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 11:23:45 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:34:01 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define CUB3D_H
 
 # include "../minilibx_linux/mlx.h"
-# include "get_next_line/gnl.h"
+# include "libft/libft.h"
+# include "libft/src/ft_printf/ft_printf.h"
+# include "libft/src/get_next_line/get_next_line_bonus.h"
+# include <X11/X.h>
 # include <assert.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -26,15 +29,14 @@
 # include <sys/time.h>
 # include <time.h>
 # include <unistd.h>
-#  include <X11/X.h>
 
-#define PINK 0xffc0cb
-#define BLUE 0x0100fa
-#define GREEN 0x00fa01
-#define RED 0xfa0100
-#define YELLOW 0xffff00
-#define FL 0xa9a9a9
-#define CEAL 0xf5f5f5
+# define PINK 0xffc0cb
+# define BLUE 0x0100fa
+# define GREEN 0x00fa01
+# define RED 0xfa0100
+# define YELLOW 0xffff00
+# define FL 0xa9a9a9
+# define CEAL 0xf5f5f5
 
 # define MOVE_SPEED 0.03
 # define ROTATION_SPEED 0.02
@@ -52,20 +54,21 @@
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
-#  define KEY_PRESS         KeyPress
-#  define KEY_RELEASE       KeyRelease
+# define KEY_PRESS KeyPress
+# define KEY_RELEASE KeyRelease
 
-#  define KEY_PRESS_MASK	KeyPressMask
-#  define KEY_RELEASE_MASK	KeyReleaseMask
+# define KEY_PRESS_MASK KeyPressMask
+# define KEY_RELEASE_MASK KeyReleaseMask
 # include <X11/keysym.h>
 
 # define PI 3.14
 
-enum Cardinal {
-  EAST = 0,
-  WEST,
-  SOUTH,
-  NORTH
+enum					Cardinal
+{
+	EAST = 0,
+	WEST,
+	SOUTH,
+	NORTH
 };
 
 typedef struct s_dataList
@@ -104,8 +107,8 @@ typedef struct s_image
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
-	int     width;
-    int     height;
+	int					width;
+	int					height;
 }						t_image;
 
 typedef struct s_player
@@ -156,8 +159,8 @@ typedef struct s_game
 	t_player			player;
 	t_raycast			rc;
 	t_image				back;
-	t_pressed 			pressed;
-	t_image 			walls[4];
+	t_pressed			pressed;
+	t_image				walls[4];
 }						t_game;
 
 // free data
@@ -172,10 +175,10 @@ bool					check_corners(char **map);
 bool					valid_symbol_character(char c);
 
 // dataList
-t_dataList				*ft_lstlast(t_dataList *lst);
-void					ft_lstadd_back(t_dataList **lst, t_dataList *new);
-t_dataList				*ft_lstnew(char *str);
-int						ft_lstsize(t_dataList *start, t_dataList *end,
+t_dataList				*ft_dbl_lstlast(t_dataList *lst);
+void					ft_dbl_lstadd_back(t_dataList **lst, t_dataList *new);
+t_dataList				*ft_dbl_lstnew(char *str);
+int						ft_dbl_lstsize(t_dataList *start, t_dataList *end,
 							int *cols);
 void					free_data_list(t_dataList *list);
 

@@ -1,3 +1,6 @@
+GREEN = \033[0;32m
+RESET = \033[0m
+
 NAME		= 	cub3D
 
 CC				=	cc
@@ -5,8 +8,8 @@ CC_FLAGS		=	-Wall -Wextra -Werror -g #-fsanitize=address
 
 MLX = minilibx_linux/
 MLX_FLAGS = -I -g3 -L /usr/X11/lib -Lincludes -L./mlx -lmlx -Imlx -lXext -lX11 -lz
-# LIBFT = inc/libft/
-# LIB_FLAGS = -L$(LIBFT) -lft -I$(LIBFT)
+LIBFT_F = inc/libft/
+LIBFLAGS = -L$(LIBFT_F) -lft -I$(LIBFT_F) -I$(LIBFT_F)/src/ft_printf/ -I$(LIBFT_F)/src/get_next_line/
 
 SRCS		=	main.c split.c\
 				error.c\
@@ -16,8 +19,6 @@ SRCS		=	main.c split.c\
 				utils.c\
 				utils_map.c\
 				valid_map.c\
-				get_next_line_utils.c\
-				get_next_line.c
 
 #SRCS_BONUS		=	main.c map_render.c \
 #				image_render.c map_check.c utils.c \
@@ -39,7 +40,7 @@ OBJS_P		=	$(addprefix $(OBJS_F), $(OBJS))
 #OBJS_PBONUS	=	$(addprefix $(OBJS_FBONUS), $(OBJS_BONUS))
 #NAME_BONUS	=	cub3D_bonus
 
-VPATH = $(SRCS_F) $(SRCS_F)parsing/ inc/get_next_line/
+VPATH = $(SRCS_F) $(SRCS_F)parsing/
 SRCS_F			= src/
 OBJS_F			= obj/
 
@@ -50,10 +51,11 @@ $(OBJS_F)%.o: %.c Makefile inc/cub3d.h
 	@echo "Working on: $<"
 	@$(CC) $(CC_FLAGS) -O3 -c $< -o $@
 
-$(NAME): $(OBJS_P)
+$(NAME): $(OBJS_P) $(LIBFT_F)
 	@$(MAKE) -C $(MLX)
-	@$(CC) -O3 -o $(NAME) $(OBJS_P) $(CC_FLAGS) -L$(MLX) $(MLX_FLAGS) -lm
-	@echo "OK"
+	$(MAKE) -C $(LIBFT_F)
+	@$(CC) -O3 -o $(NAME) $(OBJS_P) $(CC_FLAGS) $(LIBFLAGS) -L$(MLX) $(MLX_FLAGS) -lm
+	@echo "\n$(GREEN)\n—————————————✣ CUB3D COMPILED ✣—————————————\n$(RESET)"
 
 #bonus: $(NAME_BONUS)
 #
@@ -70,11 +72,11 @@ $(NAME): $(OBJS_P)
 
 clean:
 	@rm -rf $(OBJS_F)
-	@$(MAKE) clean -C $(MLX)
-	# @$(MAKE) fclean -C $(LIBFT)
+	@$(MAKE) -C $(MLX) clean
 
 fclean:	clean
-	@#rm -rf $(NAME)
+	@$(MAKE) -C $(LIBFT_F) fclean
+	@rm -rf $(NAME)
 
 re:		fclean all
 

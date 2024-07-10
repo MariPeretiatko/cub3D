@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl.h                                              :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 22:04:29 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/06/12 22:23:20 by dyarkovs         ###   ########.fr       */
+/*   Created: 2023/11/27 00:58:42 by dyarkovs          #+#    #+#             */
+/*   Updated: 2024/03/05 14:29:36 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#include "../../libft.h"
 
-#define BUFFER_SIZE 100
+int	ft_atoi(const char *str)
+{
+	int		sign;
+	int		nb;
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-
-size_t	ft_strlen_gnl(const char *str);
-char	*ft_strchr_gnl(const char *s, int c);
-char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin_gnl(char const *s1, char const *s2);
-
-char	*get_next_line(int fd);
-
-#endif
+	sign = 1;
+	nb = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		nb = (nb * 10) + (*str - '0');
+		str++;
+	}
+	return (nb * sign);
+}
