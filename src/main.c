@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:49:33 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 10:38:19 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:22:48 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	init_position_charactor(t_game *game)
 			{
 				game->player.direction = game->map->map[i][j];
 				game->map->map[i][j] = '0';
-				// game->player.pos_x = i + 0.5;
-				// game->player.pos_y = j + 0.5;
-				game->player.pos_x = i;
-				game->player.pos_y = j;
+				game->player.pos_x = i + 0.5;
+				game->player.pos_y = j + 0.5;
+				// game->player.pos_x = i;
+				// game->player.pos_y = j;
 			}
 			j++;
 		}
@@ -194,13 +194,7 @@ int	render(t_game *game)
 		else
 			game->rc.perp_wall_dist = (game->rc.map_y - game->player.pos_y + (1
 						- game->rc.step_y) / 2) / game->rc.raydir_y + 0.0001;
-		// line_height = (int)(SCREEN_HEIGHT / game->rc.perp_wall_dist);
-		// draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-		// if (draw_start < 0)
-		// 	draw_start = 0;
-		// draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-		// if (draw_end >= SCREEN_HEIGHT)
-		// 	draw_end = SCREEN_HEIGHT - 1;
+						
 		line_height = (int)(SCREEN_HEIGHT / game->rc.perp_wall_dist);
 		draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
 		if (draw_start < 0)
@@ -208,41 +202,7 @@ int	render(t_game *game)
 		draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
 		if (draw_end >= SCREEN_HEIGHT)
 			draw_end = SCREEN_HEIGHT - 1;
-		// if (game->rc.side == 0)
-		// {
-		// 	if (game->rc.raydir_x > 0)
-		// 		color = PINK; // EAST_COLOR восток
-		// 	else
-		// 		color = GREEN; // WEST_COLOR запад
-		// }
-		// else
-		// {
-		// 	if (game->rc.raydir_y > 0)
-		// 		color = RED; // SOUTH_COLOR юг
-		// 	else
-		// 		color = YELLOW; // NORTH_COLOR север
-		// }
-		//стены плывут
-		// double wallX;
-		// if (game->rc.side == 0)
-    	// 	wallX = game->player.pos_y + game->rc.perp_wall_dist * game->rc.raydir_y;
-		// else
-    	// 	wallX = game->player.pos_x + game->rc.perp_wall_dist * game->rc.raydir_x;
-		// wallX -= floor(wallX);
-		
-		// int texX = (int)(wallX * (double)game->walls[0].width);
-		// if (game->rc.side == 0 && game->rc.raydir_x > 0)
-		//     texX = game->walls[0].width - texX - 1;
-		// if (game->rc.side == 1 && game->rc.raydir_y < 0)
-		//     texX = game->walls[0].width - texX - 1;
-		
-		// for (int y = draw_start; y < draw_end; y++) {
-		//     double texPos = (y - draw_start) * (double)game->walls[0].height / (draw_end - draw_start);
-		//     int texY = (int)texPos & (game->walls[0].height - 1);
-		//     color = get_texture_pixel(&game->walls[check_cardinal_directions(game)], texX, texY);
-		//     my_mlx_pixel_put(&game->back, x, y, color);
-		// }
-
+			
 		double wallX;
 		if (game->rc.side == 0)
 		    wallX = game->player.pos_y + game->rc.perp_wall_dist * game->rc.raydir_y;
@@ -265,14 +225,6 @@ int	render(t_game *game)
 		    color = get_texture_pixel(&game->walls[check_cardinal_directions(game)], texX, texY);
 		    my_mlx_pixel_put(&game->back, x, y, color);
 		}
-		
-		// for (int y = draw_start; y < draw_end; y++)
-		// {
-		// 	// my_mlx_pixel_put(&game->back, x, y, color);
-
-
-		// 	my_mlx_pixel_put(&game->back, x, y, color = get_pixel(&game->walls[check_cardinal_directions(game)], x, y));
-		// }
 	}
 	moves_execute(game);
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->back.img, 0, 0);

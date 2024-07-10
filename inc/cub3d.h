@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/08 22:40:50 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:23:45 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 #define FL 0xa9a9a9
 #define CEAL 0xf5f5f5
 
-# define MOVE_SPEED 0.02
-# define ROTATION_SPEED 0.018
+# define MOVE_SPEED 0.03
+# define ROTATION_SPEED 0.02
 
 # define SCREEN_WIDTH 1800
 # define SCREEN_HEIGHT 1000
