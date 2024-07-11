@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:49:33 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 11:22:48 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/10 19:22:10 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
 bool	moves_execute(t_game *game);
-int get_pixel(t_image *img, int x, int y);
+int		get_pixel(t_image *img, int x, int y);
 
 void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
 {
@@ -42,8 +42,6 @@ void	init_position_charactor(t_game *game)
 				game->map->map[i][j] = '0';
 				game->player.pos_x = i + 0.5;
 				game->player.pos_y = j + 0.5;
-				// game->player.pos_x = i;
-				// game->player.pos_y = j;
 			}
 			j++;
 		}
@@ -97,133 +95,170 @@ int	check_cardinal_directions(t_game *game)
 	if (game->rc.side == 0)
 	{
 		if (game->rc.raydir_x > 0)
-			return (EAST); // EAST_COLOR восток
+			return (EAST);
 		else
-			return (WEST); // WEST_COLOR запад
+			return (WEST);
 	}
 	else
 	{
 		if (game->rc.raydir_y > 0)
-			return (SOUTH); // SOUTH_COLOR юг
+			return (SOUTH);
 		else
-			return (NORTH); // NORTH_COLOR север
+			return (NORTH);
+	}
+}
+int	get_pixel(t_image *img, int x, int y)
+{
+	char	*pixel;
+	int		color;
+
+	pixel = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	if (img->endian == 0)
+		color = *(unsigned int *)pixel;
+	else
+		color = (pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3];
+	return (color);
+}
+//123
+int	get_texture_pixel(t_image *texture, int texX, int texY)
+{
+	int				offset;
+	unsigned int	*pixel;
+
+	if (!texture || !texture->addr || texX < 0 || texY < 0
+		|| texX >= texture->width || texY >= texture->height)
+		return (0);
+	offset = texY * (texture->line_length / (texture->bits_per_pixel / 8))
+		+ texX;
+	pixel = (unsigned int *)(texture->addr + offset * (texture->bits_per_pixel
+				/ 8));
+	return (*pixel);
+}
+
+void	ray_direction_calculate(t_game *game, int x)
+{
+	game->rc.camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+	game->rc.raydir_x = game->player.dir_x + game->player.plane_x
+		* game->rc.camera_x;
+	game->rc.raydir_y = game->player.dir_y + game->player.plane_y
+		* game->rc.camera_x;
+	game->rc.map_x = (int)game->player.pos_x;
+	game->rc.map_y = (int)game->player.pos_y;
+	game->rc.delta_dist_x = fabs(1 / game->rc.raydir_x);
+	game->rc.delta_dist_y = fabs(1 / game->rc.raydir_y);
+}
+
+void	calculate_step_and_dist(t_game *game)
+{
+	if (game->rc.raydir_x < 0)
+	{
+		game->rc.step_x = -1;
+		game->rc.side_dist_x = (game->player.pos_x - game->rc.map_x)
+			* game->rc.delta_dist_x;
+	}
+	else
+	{
+		game->rc.step_x = 1;
+		game->rc.side_dist_x = (game->rc.map_x + 1.0 - game->player.pos_x)
+			* game->rc.delta_dist_x;
+	}
+	if (game->rc.raydir_y < 0)
+	{
+		game->rc.step_y = -1;
+		game->rc.side_dist_y = (game->player.pos_y - game->rc.map_y)
+			* game->rc.delta_dist_y;
+	}
+	else
+	{
+		game->rc.step_y = 1;
+		game->rc.side_dist_y = (game->rc.map_y + 1.0 - game->player.pos_y)
+			* game->rc.delta_dist_y;
 	}
 }
 
-int get_texture_pixel(t_image *texture, int texX, int texY)
+void	set_ray_steps(t_game *game)
 {
-    // Проверка на наличие текстуры и корректные координаты
-    if (!texture || !texture->addr || texX < 0 || texY < 0 || texX >= texture->width || texY >= texture->height) {
-        return 0; // Возвращаем нулевой цвет по умолчанию или другое значение по вашему выбору
-    }
+	game->rc.hit = 0;
+	while (game->rc.hit == 0)
+	{
+		if (game->rc.side_dist_x < game->rc.side_dist_y)
+		{
+			game->rc.side_dist_x += game->rc.delta_dist_x;
+			game->rc.map_x += game->rc.step_x;
+			game->rc.side = 0;
+		}
+		else
+		{
+			game->rc.side_dist_y += game->rc.delta_dist_y;
+			game->rc.map_y += game->rc.step_y;
+			game->rc.side = 1;
+		}
+		if (game->map->map[game->rc.map_x][game->rc.map_y] > '0')
+			game->rc.hit = 1;
+	}
+}
 
-    // Вычисляем смещение до нужного пикселя в адресе данных текстуры
-    int offset = texY * (texture->line_length / (texture->bits_per_pixel / 8)) + texX;
+void	calculate_wall_parameters(t_game *game)
+{
+	if (game->rc.side == 0)
+		game->rc.perp_wall_dist = (game->rc.map_x - game->player.pos_x + (1
+					- game->rc.step_x) / 2) / game->rc.raydir_x + 0.0001;
+	else
+		game->rc.perp_wall_dist = (game->rc.map_y - game->player.pos_y + (1
+					- game->rc.step_y) / 2) / game->rc.raydir_y + 0.0001;
+	game->rc.line_height = (int)(SCREEN_HEIGHT / game->rc.perp_wall_dist);
+	game->rc.draw_start = -game->rc.line_height / 2 + SCREEN_HEIGHT / 2;
+	if (game->rc.draw_start < 0)
+		game->rc.draw_start = 0;
+	game->rc.draw_end = game->rc.line_height / 2 + SCREEN_HEIGHT / 2;
+	if (game->rc.draw_end >= SCREEN_HEIGHT)
+		game->rc.draw_end = SCREEN_HEIGHT - 1;
+}
 
-    // Приводим указатель к нужному типу (unsigned int*), чтобы получить цвет пикселя
-    unsigned int *pixel = (unsigned int *)(texture->addr + offset * (texture->bits_per_pixel / 8));
+void	calculate_texture_coordinates(t_game *game)
+{
+	if (game->rc.side == 0)
+		game->rc.wallX = game->player.pos_y + game->rc.perp_wall_dist
+			* game->rc.raydir_y;
+	else
+		game->rc.wallX = game->player.pos_x + game->rc.perp_wall_dist
+			* game->rc.raydir_x;
+	game->rc.wallX -= floor(game->rc.wallX);
+	game->rc.texX = (int)(game->rc.wallX * (double)game->walls[0].width);
+	if (game->rc.side == 0 && game->rc.raydir_x > 0)
+		game->rc.texX = game->walls[0].width - game->rc.texX - 1;
+	if (game->rc.side == 1 && game->rc.raydir_y < 0)
+		game->rc.texX = game->walls[0].width - game->rc.texX - 1;
+	game->rc.step = 1.0 * game->walls[0].height / game->rc.line_height;
+	game->rc.texPos = (game->rc.draw_start - SCREEN_HEIGHT / 2
+			+ game->rc.line_height / 2) * game->rc.step;
+}
 
-    // Возвращаем значение цвета пикселя
-    return *pixel;
+void	render_walls(t_game *game, int x, int y)
+{
+	game->rc.texY = (int)game->rc.texPos & (game->walls[0].height - 1);
+	game->rc.texPos += game->rc.step;
+	game->rc.color = get_texture_pixel(&game->walls[check_cardinal_directions(game)],
+			game->rc.texX, game->rc.texY);
+	my_mlx_pixel_put(&game->back, x, y, game->rc.color);
 }
 
 int	render(t_game *game)
 {
-	int	line_height;
-	int	draw_start;
-	int	draw_end;
-	int	color;
+	int	y;
 
 	draw_floor_and_ceiling(game);
 	for (int x = 0; x < SCREEN_WIDTH; x++)
 	{
-		game->rc.camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
-		game->rc.raydir_x = game->player.dir_x + game->player.plane_x
-			* game->rc.camera_x;
-		game->rc.raydir_y = game->player.dir_y + game->player.plane_y
-			* game->rc.camera_x;
-		game->rc.map_x = (int)game->player.pos_x;
-		game->rc.map_y = (int)game->player.pos_y;
-		game->rc.delta_dist_x = fabs(1 / game->rc.raydir_x);
-		game->rc.delta_dist_y = fabs(1 / game->rc.raydir_y);
-		if (game->rc.raydir_x < 0)
+		ray_direction_calculate(game, x);
+		calculate_step_and_dist(game);
+		set_ray_steps(game);
+		calculate_wall_parameters(game);
+		calculate_texture_coordinates(game);
+		y = game->rc.draw_start - 1;
+		while (++y < game->rc.draw_end)
 		{
-			game->rc.step_x = -1;
-			game->rc.side_dist_x = (game->player.pos_x - game->rc.map_x)
-				* game->rc.delta_dist_x;
-		}
-		else
-		{
-			game->rc.step_x = 1;
-			game->rc.side_dist_x = (game->rc.map_x + 1.0 - game->player.pos_x)
-				* game->rc.delta_dist_x;
-		}
-		if (game->rc.raydir_y < 0)
-		{
-			game->rc.step_y = -1;
-			game->rc.side_dist_y = (game->player.pos_y - game->rc.map_y)
-				* game->rc.delta_dist_y;
-		}
-		else
-		{
-			game->rc.step_y = 1;
-			game->rc.side_dist_y = (game->rc.map_y + 1.0 - game->player.pos_y)
-				* game->rc.delta_dist_y;
-		}
-		game->rc.hit = 0;
-		while (game->rc.hit == 0)
-		{
-			if (game->rc.side_dist_x < game->rc.side_dist_y)
-			{
-				game->rc.side_dist_x += game->rc.delta_dist_x;
-				game->rc.map_x += game->rc.step_x;
-				game->rc.side = 0;
-			}
-			else
-			{
-				game->rc.side_dist_y += game->rc.delta_dist_y;
-				game->rc.map_y += game->rc.step_y;
-				game->rc.side = 1;
-			}
-			if (game->map->map[game->rc.map_x][game->rc.map_y] > '0')
-				game->rc.hit = 1;
-		}
-		if (game->rc.side == 0)
-			game->rc.perp_wall_dist = (game->rc.map_x - game->player.pos_x + (1
-						- game->rc.step_x) / 2) / game->rc.raydir_x + 0.0001;
-		else
-			game->rc.perp_wall_dist = (game->rc.map_y - game->player.pos_y + (1
-						- game->rc.step_y) / 2) / game->rc.raydir_y + 0.0001;
-						
-		line_height = (int)(SCREEN_HEIGHT / game->rc.perp_wall_dist);
-		draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_start < 0)
-			draw_start = 0;
-		draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_end >= SCREEN_HEIGHT)
-			draw_end = SCREEN_HEIGHT - 1;
-			
-		double wallX;
-		if (game->rc.side == 0)
-		    wallX = game->player.pos_y + game->rc.perp_wall_dist * game->rc.raydir_y;
-		else
-		    wallX = game->player.pos_x + game->rc.perp_wall_dist * game->rc.raydir_x;
-		wallX -= floor(wallX);  // Извлечение дробной части для координаты текстуры
-		
-		int texX = (int)(wallX * (double)game->walls[0].width);
-		if (game->rc.side == 0 && game->rc.raydir_x > 0)
-		    texX = game->walls[0].width - texX - 1;
-		if (game->rc.side == 1 && game->rc.raydir_y < 0)
-		    texX = game->walls[0].width - texX - 1;
-		
-		double step = 1.0 * game->walls[0].height / line_height;
-		double texPos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-		
-		for (int y = draw_start; y < draw_end; y++) {
-		    int texY = (int)texPos & (game->walls[0].height - 1);
-		    texPos += step;
-		    color = get_texture_pixel(&game->walls[check_cardinal_directions(game)], texX, texY);
-		    my_mlx_pixel_put(&game->back, x, y, color);
+			render_walls(game, x, y);
 		}
 	}
 	moves_execute(game);
@@ -310,35 +345,17 @@ int	key_hook(int keycode, t_game *game)
 	if (keycode == KEY_ESC)
 		exit(0);
 	if (keycode == KEY_W)
-	{
-		write(1, "\nKEY_W\n", 7);
 		game->pressed.W = true;
-	}
 	if (keycode == KEY_S)
-	{
-		write(1, "\nKEY_S\n", 7);
 		game->pressed.S = true;
-	}
 	if (keycode == KEY_A)
-	{
-		write(1, "\nKEY_A\n", 7);
 		game->pressed.A = true;
-	}
 	if (keycode == KEY_D)
-	{
-		write(1, "\nKEY_D\n", 7);
 		game->pressed.D = true;
-	}
 	if (keycode == KEY_RIGHT)
-	{
-		write(1, "\nKEY_RIGHT\n", 11);
 		game->pressed.right = true;
-	}
 	if (keycode == KEY_LEFT)
-	{
-		write(1, "\nKEY_LEFT\n", 10);
 		game->pressed.left = true;
-	}
 	return (0);
 }
 
@@ -356,7 +373,6 @@ int	key_release_hook(int keycode, t_game *game)
 		game->pressed.left = false;
 	if (keycode == KEY_RIGHT && game->pressed.right)
 		game->pressed.right = false;
-	printf("key_release_hook\n");
 	return (0);
 }
 
@@ -386,71 +402,39 @@ int	key_action(int keycode, t_game *game)
 	return (0);
 }
 
-int get_pixel(t_image *img, int x, int y)
+
+
+void	init_walls(t_game *game, t_map *map)
 {
-    char *pixel;
-    int color;
+	int	w;
+	int	h;
+	int	i;
 
-    pixel = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-    if (img->endian == 0)
-        color = *(unsigned int *)pixel;
-    else
-        color = (pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3];
-
-    return color;
-}
-
-void init_walls(t_game *game, t_map *map)
-{
-	// int Width = 64; 
-	// int Height = 64;
-	int Width = 512; 
-	int Height = 512;
-	game->walls[0].height = 512;
-	game->walls[0].width = 512;
-	game->walls[1].height = 512;
-	game->walls[1].width = 512;
-	game->walls[2].height = 512;
-	game->walls[2].width = 512;
-	game->walls[3].height = 512;
-	game->walls[3].width = 512;
-	
-	// game->walls[0].img = malloc(sizeof(t_image));
-	// game->walls[1].img = malloc(sizeof(t_image));
-	// game->walls[2].img = malloc(sizeof(t_image));
-	// game->walls[3].img = malloc(sizeof(t_image));
-	
-	game->walls[0].img = mlx_xpm_file_to_image(game->mlx, map->EA, &Width, &Height);
-	game->walls[1].img = mlx_xpm_file_to_image(game->mlx, map->WE, &Width, &Height);
-	game->walls[2].img = mlx_xpm_file_to_image(game->mlx, map->SO, &Width, &Height);
-	game->walls[3].img = mlx_xpm_file_to_image(game->mlx, map->NO, &Width, &Height);
-	
-	game->walls[0].addr = mlx_get_data_addr(game->walls[0].img,
-			&game->walls[0].bits_per_pixel, &game->walls[0].line_length, &game->walls[0].endian);
-	game->walls[1].addr = mlx_get_data_addr(game->walls[1].img,
-			&game->walls[1].bits_per_pixel, &game->walls[1].line_length, &game->walls[1].endian);
-	game->walls[2].addr = mlx_get_data_addr(game->walls[2].img,
-			&game->walls[2].bits_per_pixel, &game->walls[2].line_length, &game->walls[2].endian);
-	game->walls[3].addr = mlx_get_data_addr(game->walls[3].img,
-			&game->walls[3].bits_per_pixel, &game->walls[3].line_length, &game->walls[3].endian);
-	if (!game->walls[0].img || !game->walls[1].img || !game->walls[2].img || !game->walls[3].img)
+	i = -1;
+	w = 512;
+	h = 512;
+	game->walls[0].img = mlx_xpm_file_to_image(game->mlx, map->EA, &w, &h);
+	game->walls[1].img = mlx_xpm_file_to_image(game->mlx, map->WE, &w, &h);
+	game->walls[2].img = mlx_xpm_file_to_image(game->mlx, map->SO, &w, &h);
+	game->walls[3].img = mlx_xpm_file_to_image(game->mlx, map->NO, &w, &h);
+	if (!game->walls[0].img || !game->walls[1].img || !game->walls[2].img
+		|| !game->walls[3].img)
 		error_exit("textures");
-
-	printf("%d\n", game->walls[0].bits_per_pixel);
-	printf("%d\n", game->walls[0].line_length);
-	printf("%d\n", game->walls[1].line_length);
-	printf("%d\n", game->walls[2].line_length);
-	// game->back.addr = mlx_get_data_addr(game->back.img,
-	// 		&game->back.bits_per_pixel, &game->back.line_length,
-	// 		&game->back.endian);
-	
+	while (++i < 4)
+	{
+		game->walls[i].addr = mlx_get_data_addr(game->walls[i].img,
+				&game->walls[i].bits_per_pixel, &game->walls[i].line_length,
+				&game->walls[i].endian);
+		game->walls[i].height = 512;
+		game->walls[i].width = 512;
+	}
 }
 
 void	init_game(t_map *map)
 {
 	t_game	*game;
 
-	game = calloc(1, sizeof(t_game));
+	game = ft_calloc(1, sizeof(t_game));
 	if (!game)
 	{
 		fprintf(stderr, "Failed to allocate memory for game\n");
@@ -490,7 +474,7 @@ t_map	*check_init_map(char *path)
 	{
 		error_exit("Error reading map");
 	}
-	map = calloc(1, sizeof(t_map));
+	map = ft_calloc(1, sizeof(t_map));
 	if (!map)
 	{
 		perror("calloc");

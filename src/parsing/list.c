@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:11:55 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 11:58:08 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/07/10 17:48:37 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_dataList	*ft_dbl_lstnew(char *str)
 	new_obj = (t_dataList *)malloc(sizeof(t_dataList));
 	if (new_obj)
 	{
-		new_obj->string = strdup(str);
+		new_obj->string = ft_strdup(str);
 		new_obj->prev = NULL;
 		new_obj->next = NULL;
 	}
@@ -60,7 +60,7 @@ int	ft_dbl_lstsize(t_dataList *start, t_dataList *end, int *cols)
 	i = 0;
 	while (start != end->next)
 	{
-		tmp = strlen(start->string) - 1;
+		tmp = ft_strlen(start->string) - 1;
 		if (*cols < tmp)
 			*cols = tmp;
 		start = start->next;

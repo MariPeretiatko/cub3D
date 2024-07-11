@@ -11,7 +11,7 @@ SRCS_LIB = 	ft_calloc.c		ft_isdigit.c	ft_memcmp.c		ft_putchar_fd.c	ft_split.c  \
 		ft_bzero.c		ft_isascii.c	ft_memchr.c		ft_memset.c		ft_putstr_fd.c  \
 		ft_striteri.c	ft_strlen.c		ft_strrchr.c	ft_memmove.c 	ft_atol.c \
 		ft_lstnew.c		ft_lstadd_front.c	ft_lstsize.c	ft_lstlast.c ft_lstadd_back.c \
-		ft_lstdelone.c	ft_lstclear.c		ft_lstiter.c	ft_lstmap.c \
+		ft_lstdelone.c	ft_lstclear.c		ft_lstiter.c	ft_lstmap.c ft_strcmp.c\
 		ft_abs.c	ft_swap.c
 SRCS_PRINTF = ft_printf.c \
 		struct.c	clean_reset.c\

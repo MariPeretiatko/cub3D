@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/10 16:34:01 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:45:42 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,15 @@ typedef struct s_raycast
 	int					step_y;
 	int					hit;
 	int					side;
+	int					line_height;
+	int					draw_start;
+	int					draw_end;
+	double				wallX;
+	double				step;
+	double				texPos;
+	int					texY;
+	int					texX;
+	int					color;
 }						t_raycast;
 
 typedef struct s_pressed

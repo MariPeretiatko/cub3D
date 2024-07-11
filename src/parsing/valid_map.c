@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:10 by mperetia          #+#    #+#             */
-/*   Updated: 2024/06/15 00:01:34 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:27:49 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	valid_symbols(char **map)
 bool	is_wall_error(char **map, int x, int y)
 {
 	if (y - 1 < 0 || x - 1 < 0 || !map[y - 1] || !map[y + 1]
-		|| (int)strlen(map[y - 1]) <= x || (int)strlen(map[y + 1]) <= x || !map[y][x - 1]
-		|| !map[y][x + 1] || map[y][x + 1] == ' ' || map[y + 1][x] == ' '
-		|| map[y][x - 1] == ' ' || map[y - 1][x] == ' ')
+		|| (int)strlen(map[y - 1]) <= x || (int)strlen(map[y + 1]) <= x
+		|| !map[y][x - 1] || !map[y][x + 1] || map[y][x + 1] == ' ' || map[y
+		+ 1][x] == ' ' || map[y][x - 1] == ' ' || map[y - 1][x] == ' ')
 	{
 		return (true);
 	}
@@ -100,9 +100,7 @@ bool	check_corners(char **map)
 				if (!map[y - 1][x + 1] || !map[y + 1][x + 1] || map[y - 1][x
 					- 1] == ' ' || map[y + 1][x - 1] == ' ' || map[y - 1][x
 					+ 1] == ' ' || map[y + 1][x + 1] == ' ')
-				{
 					return (true);
-				}
 			}
 			x++;
 		}

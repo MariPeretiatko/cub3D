@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:13:46 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 12:00:59 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:07:57 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@ int	check_map_name(const char *av)
 {
 	char	*name_map;
 
-	name_map = strrchr(av, '.');
+	name_map = ft_strrchr(av, '.');
 	if (name_map)
-		return (!strcmp(name_map, ".cub"));
+		return (!ft_strcmp(name_map, ".cub"));
 	return (0);
 }
 
 void	check_parameter(t_map *map, char **parameters)
 {
-	if (!strcmp(parameters[0], "NO") && !map->NO)
-		map->NO = strdup(parameters[1]);
-	else if (!strcmp(parameters[0], "SO") && !map->SO)
-		map->SO = strdup(parameters[1]);
-	else if (!strcmp(parameters[0], "WE") && !map->WE)
-		map->WE = strdup(parameters[1]);
-	else if (!strcmp(parameters[0], "EA") && !map->EA)
-		map->EA = strdup(parameters[1]);
-	else if (!strcmp(parameters[0], "F") && !map->floor)
-		map->floor = strdup(parameters[1]);
-	else if (!strcmp(parameters[0], "C") && !map->ceiling)
-		map->ceiling = strdup(parameters[1]);
+	if (!ft_strcmp(parameters[0], "NO") && !map->NO)
+		map->NO = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "SO") && !map->SO)
+		map->SO = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "WE") && !map->WE)
+		map->WE = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "EA") && !map->EA)
+		map->EA = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "F") && !map->floor)
+		map->floor = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "C") && !map->ceiling)
+		map->ceiling = ft_strdup(parameters[1]);
 	else
 		error_exit("Incorrect parameters in the file");
 }
@@ -59,12 +59,12 @@ void	init_parameter(t_map *map, t_dataList *data)
 	i = 0;
 	while (i < map->start_map)
 	{
-		if (strcmp(data->string, "\n"))
+		if (ft_strcmp(data->string, "\n"))
 		{
 			data->string = remove_symb(data->string, '\n');
 			parameters = ft_split(data->string, ' ');
 			size_params = count_size_array(parameters);
-			if (size_params != 2 && strcmp(parameters[2], " "))
+			if (size_params != 2 && ft_strcmp(parameters[2], " "))
 				error_exit("Invalid parameter format");
 			check_parameter(map, parameters);
 			free_string_array(parameters);
@@ -148,17 +148,12 @@ t_dataList	*check_last_map(t_dataList *dataList)
 	t_dataList	*last;
 
 	last = ft_dbl_lstlast(dataList);
-	while (!strcmp(last->string, "\n"))
+	while (!ft_strcmp(last->string, "\n"))
 	{
 		last = last->prev;
 	}
 	return (last);
 }
-
-// bool	ft_isdigit(char c)
-// {
-// 	return ('0' <= c && c <= '9');
-// }
 
 bool	error_color(char *rgb)
 {
