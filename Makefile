@@ -11,14 +11,17 @@ MLX_FLAGS = -I -g3 -L /usr/X11/lib -Lincludes -L./mlx -lmlx -Imlx -lXext -lX11 -
 LIBFT_F = inc/libft/
 LIBFLAGS = -L$(LIBFT_F) -lft -I$(LIBFT_F) -I$(LIBFT_F)/src/ft_printf/ -I$(LIBFT_F)/src/get_next_line/
 
-SRCS		=	main.c split.c\
+SRCS		=	main.c\
 				error.c\
 				free.c\
 				list.c\
-				sub_file.c\
 				utils.c\
-				utils_map.c\
 				valid_map.c\
+				valid_symbols.c\
+				init_map.c\
+				check_map.c\
+				raycast.c render.c utils_raycast.c\
+				init_game.c input_game.c movement_game.c rotate_game.c\
 
 #SRCS_BONUS		=	main.c map_render.c \
 #				image_render.c map_check.c utils.c \
@@ -40,7 +43,7 @@ OBJS_P		=	$(addprefix $(OBJS_F), $(OBJS))
 #OBJS_PBONUS	=	$(addprefix $(OBJS_FBONUS), $(OBJS_BONUS))
 #NAME_BONUS	=	cub3D_bonus
 
-VPATH = $(SRCS_F) $(SRCS_F)parsing/
+VPATH = $(SRCS_F) $(SRCS_F)parsing/ $(SRCS_F)raycast/ $(SRCS_F)game/ 
 SRCS_F			= src/
 OBJS_F			= obj/
 

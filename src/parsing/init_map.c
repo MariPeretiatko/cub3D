@@ -1,53 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_map.c                                        :+:      :+:    :+:   */
+/*   init_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 23:13:46 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/10 18:07:57 by mperetia         ###   ########.fr       */
+/*   Created: 2024/07/22 14:44:42 by mperetia          #+#    #+#             */
+/*   Updated: 2024/07/23 16:18:58 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-int	check_map_name(const char *av)
-{
-	char	*name_map;
-
-	name_map = ft_strrchr(av, '.');
-	if (name_map)
-		return (!ft_strcmp(name_map, ".cub"));
-	return (0);
-}
-
 void	check_parameter(t_map *map, char **parameters)
 {
-	if (!ft_strcmp(parameters[0], "NO") && !map->NO)
-		map->NO = ft_strdup(parameters[1]);
-	else if (!ft_strcmp(parameters[0], "SO") && !map->SO)
-		map->SO = ft_strdup(parameters[1]);
-	else if (!ft_strcmp(parameters[0], "WE") && !map->WE)
-		map->WE = ft_strdup(parameters[1]);
-	else if (!ft_strcmp(parameters[0], "EA") && !map->EA)
-		map->EA = ft_strdup(parameters[1]);
+	if (!ft_strcmp(parameters[0], "NO") && !map->no)
+		map->no = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "SO") && !map->so)
+		map->so = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "WE") && !map->we)
+		map->we = ft_strdup(parameters[1]);
+	else if (!ft_strcmp(parameters[0], "EA") && !map->ea)
+		map->ea = ft_strdup(parameters[1]);
 	else if (!ft_strcmp(parameters[0], "F") && !map->floor)
 		map->floor = ft_strdup(parameters[1]);
 	else if (!ft_strcmp(parameters[0], "C") && !map->ceiling)
 		map->ceiling = ft_strdup(parameters[1]);
 	else
 		error_exit("Incorrect parameters in the file");
-}
-
-int	count_size_array(char **array)
-{
-	int	count;
-
-	count = 0;
-	while (array[count])
-		count++;
-	return (count);
 }
 
 void	init_parameter(t_map *map, t_dataList *data)
@@ -72,103 +52,6 @@ void	init_parameter(t_map *map, t_dataList *data)
 		data = data->next;
 		i++;
 	}
-}
-
-bool	is_one_or_space(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] == '\n')
-		return (false);
-	while (str[i])
-	{
-		if (str[i] != '1' && str[i] != ' ' && str[i] != '\f' && str[i] != '\n'
-			&& str[i] != '\r' && str[i] != '\t' && str[i] != '\v')
-		{
-			return (false);
-		}
-		i++;
-	}
-	return (true);
-}
-
-t_dataList	*check_start_map(t_map *map, t_dataList *data)
-{
-	int	i;
-
-	i = 0;
-	while (data)
-	{
-		if (is_one_or_space(data->string))
-		{
-			map->start_map = i;
-			return (data);
-		}
-		data = data->next;
-		i++;
-	}
-	return (NULL);
-}
-
-t_dataList	*read_map(char *path)
-{
-	char		*line;
-	int			fd;
-	t_dataList	*data_list;
-
-	data_list = NULL;
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		error_exit("Could not open the file, check if the path is correct");
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		if (!data_list)
-			data_list = ft_dbl_lstnew(line);
-		else
-			ft_dbl_lstadd_back(&data_list, ft_dbl_lstnew(line));
-		free(line);
-		line = get_next_line(fd);
-	}
-	if (close(fd) == -1)
-		error_exit("close");
-	return (data_list);
-}
-
-void	check_all_init_params(t_map *map)
-{
-	if (!map->EA || !map->WE || !map->SO || !map->NO || !map->floor
-		|| !map->ceiling)
-		error_exit("Not all parameters are initialized ");
-}
-
-t_dataList	*check_last_map(t_dataList *dataList)
-{
-	t_dataList	*last;
-
-	last = ft_dbl_lstlast(dataList);
-	while (!ft_strcmp(last->string, "\n"))
-	{
-		last = last->prev;
-	}
-	return (last);
-}
-
-bool	error_color(char *rgb)
-{
-	int	i;
-
-	i = 0;
-	while (rgb[i])
-	{
-		if (!ft_isdigit(rgb[i]))
-			error_exit("The color parameter should contain only numbers");
-		if (i >= 4)
-			error_exit("Numbers in color should be no more than 3");
-		i++;
-	}
-	return (true);
 }
 
 unsigned int	init_colors(char *color_string)
@@ -216,4 +99,25 @@ void	init_map(t_map *map, t_dataList *data)
 		head = head->next;
 	}
 	map->map[i] = NULL;
+}
+
+t_map	*check_init_map(char *path)
+{
+	t_dataList	*data;
+	t_map		*map;
+
+	data = read_map(path);
+	if (!data)
+	{
+		error_exit("Error reading map");
+	}
+	map = ft_calloc(1, sizeof(t_map));
+	if (!map)
+	{
+		perror("calloc");
+		exit(EXIT_FAILURE);
+	}
+	init_map(map, data);
+	check_valid_map(map->map);
+	return (map);
 }

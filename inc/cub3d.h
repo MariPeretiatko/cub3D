@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/10 16:45:42 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:21:11 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@
 # define SCREEN_WIDTH 1800
 # define SCREEN_HEIGHT 1000
 
-# define texWidth 512
-# define texHeight 512
+// # define texWidth 512
+// # define texHeight 512
 
 # define KEY_W 119
 # define KEY_A 97
@@ -63,7 +63,7 @@
 
 # define PI 3.14
 
-enum					Cardinal
+enum					e_Cardinal
 {
 	EAST = 0,
 	WEST,
@@ -84,10 +84,10 @@ typedef struct s_map
 	int					start_map;
 	int					rows;
 	int					cols;
-	char				*NO;
-	char				*SO;
-	char				*WE;
-	char				*EA;
+	char				*no;
+	char				*so;
+	char				*we;
+	char				*ea;
 	char				*floor;
 	char				*ceiling;
 	unsigned int		color_floor;
@@ -141,11 +141,11 @@ typedef struct s_raycast
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
-	double				wallX;
+	double				wall_x;
 	double				step;
-	double				texPos;
-	int					texY;
-	int					texX;
+	double				tex_pos;
+	int					tex_x;
+	int					tex_y;
 	int					color;
 }						t_raycast;
 
@@ -153,10 +153,10 @@ typedef struct s_pressed
 {
 	bool				left;
 	bool				right;
-	bool				W;
-	bool				A;
-	bool				S;
-	bool				D;
+	bool				w;
+	bool				a;
+	bool				s;
+	bool				d;
 }						t_pressed;
 typedef struct s_game
 {
@@ -172,11 +172,16 @@ typedef struct s_game
 	t_image				walls[4];
 }						t_game;
 
+void					init_game(t_map *map);
+t_map					*check_init_map(char *path);
 // free data
 void					free_map(t_map *map);
 
 // valid_map
+bool					valid_symbol(char c);
+bool					valid_symbol_character(char c);
 void					valid_symbols(char **map);
+void					check_valid_map(char **map);
 // bool valid_map(char **map);
 bool					check_walls(char **map);
 bool					is_wall_error(char **map, int x, int y);
@@ -198,7 +203,8 @@ void					print_data_list(t_dataList *data);
 // global_utils
 void					free_string_array(char **string_array);
 char					*remove_symb(char *input_string, char symb);
-char	*ft_strjoin(char const *s1, char const *s2); //? libft
+char					*ft_strjoin(char const *s1, char const *s2);
+//? libft
 
 // utils check map
 
@@ -207,6 +213,10 @@ void					check_parameter(t_map *map, char **parameters);
 void					init_parameter(t_map *map, t_dataList *data);
 bool					is_one_or_space(const char *str);
 t_dataList				*check_start_map(t_map *map, t_dataList *data);
+t_dataList				*check_last_map(t_dataList *dataList);
+int						count_size_array(char **array);
+bool					error_color(char *rgb);
+void					check_all_init_params(t_map *map);
 // char**	read_map(char *path);
 t_dataList				*read_map(char *path);
 void					init_map(t_map *map, t_dataList *data);
@@ -215,5 +225,34 @@ void					init_map(t_map *map, t_dataList *data);
 char					**ft_split(char const *s, char c);
 void					print_data(char **data);
 void					print_test(t_map *map);
+
+// raycast
+
+void					init_walls(t_game *game, t_map *map);
+int						key_action(int keycode, t_game *game);
+bool					moves_execute(t_game *game);
+int						key_release_hook(int keycode, t_game *game);
+int						key_hook(int keycode, t_game *game);
+void					move_right(t_game *game);
+void					move_left(t_game *game);
+void					rotate_left(t_game *game);
+void					rotate_right(t_game *game);
+void					move_back(t_game *game);
+void					move_front(t_game *game);
+int						render(t_game *game);
+void					render_walls(t_game *game, int x, int y);
+void					calculate_texture_coordinates(t_game *game);
+void					calculate_wall_parameters(t_game *game);
+void					set_ray_steps(t_game *game);
+void					calculate_step_and_dist(t_game *game);
+void					ray_direction_calculate(t_game *game, int x);
+int						get_texture_pixel(t_image *texture, int texX, int texY);
+int						get_pixel(t_image *img, int x, int y);
+int						check_directions(t_game *game);
+void					render_floor_and_ceiling(t_game *game);
+void					add_plane_characters(t_game *game);
+void					init_position_charactor(t_game *game);
+void					my_mlx_pixel_put(t_image *image, int x, int y,
+							int color);
 
 #endif

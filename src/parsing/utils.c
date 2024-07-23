@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/09 12:00:13 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:06:29 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
+// free?
 void	free_string_array(char **array)
 {
 	int	i;
@@ -34,7 +35,7 @@ char	*remove_symb(char *input_string, char symb)
 	size_t	j;
 	size_t	i;
 
-	length = strlen(input_string);
+	length = ft_strlen(input_string);
 	new_string = (char *)malloc(length + 1);
 	if (!new_string)
 		return (NULL);
@@ -50,24 +51,47 @@ char	*remove_symb(char *input_string, char symb)
 	return (new_string);
 }
 
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-// 	char	*str;
-// 	int		len;
-// 	int		i;
-// 	int		j;
+int	count_size_array(char **array)
+{
+	int	count;
 
-// 	len = (int)ft_strlen_gnl(s1) + ft_strlen_gnl(s2);
-// 	str = malloc((len + 1) * sizeof(char));
-// 	if (str == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	j = 0;
-// 	while (s1[i])
-// 		str[j++] = s1[i++];
-// 	i = 0;
-// 	while (s2[i])
-// 		str[j++] = s2[i++];
-// 	str[j] = '\0';
-// 	return (str);
-// }
+	count = 0;
+	while (array[count])
+		count++;
+	return (count);
+}
+
+bool	is_one_or_space(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '\n')
+		return (false);
+	while (str[i])
+	{
+		if (str[i] != '1' && str[i] != ' ' && str[i] != '\f' && str[i] != '\n'
+			&& str[i] != '\r' && str[i] != '\t' && str[i] != '\v')
+		{
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	error_color(char *rgb)
+{
+	int	i;
+
+	i = 0;
+	while (rgb[i])
+	{
+		if (!ft_isdigit(rgb[i]))
+			error_exit("The color parameter should contain only numbers");
+		if (i >= 4)
+			error_exit("Numbers in color should be no more than 3");
+		i++;
+	}
+	return (true);
+}
