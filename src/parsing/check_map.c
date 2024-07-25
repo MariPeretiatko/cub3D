@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:45:09 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:18:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:50:51 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ t_dataList	*read_map(char *path)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	if (close(fd) == -1)
 		error_exit("close");
 	return (data_list);
 }
 
-void	check_all_init_params(t_map *map)
+bool	check_all_init_params(t_map *map)
 {
 	if (!map->ea || !map->we || !map->so || !map->no || !map->floor
 		|| !map->ceiling)
-		error_exit("Not all parameters are initialized ");
+		return (false);
+	return (true);
 }

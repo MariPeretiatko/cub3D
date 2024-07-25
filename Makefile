@@ -21,7 +21,7 @@ SRCS		=	main.c\
 				init_map.c\
 				check_map.c\
 				raycast.c render.c utils_raycast.c\
-				init_game.c input_game.c movement_game.c rotate_game.c\
+				init_game.c input_game.c movement_game.c rotate_game.c init_walls.c\
 
 #SRCS_BONUS		=	main.c map_render.c \
 #				image_render.c map_check.c utils.c \

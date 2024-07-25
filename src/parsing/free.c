@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:12:12 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:18:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:05:44 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,60 @@
 
 void	free_map(t_map *map)
 {
+	if (!map)
+		return ;
 	free_string_array(map->map);
-	free(map->no);
-	free(map->ea);
-	free(map->we);
-	free(map->so);
-	free(map->floor);
-	free(map->ceiling);
+	if (map->no)
+		free(map->no);
+	if (map->so)
+		free(map->so);
+	if (map->we)
+		free(map->we);
+	if (map->ea)
+		free(map->ea);
+	if (map->floor)
+		free(map->floor);
+	if (map->ceiling)
+		free(map->ceiling);
+	free_data_list(map->data);
 	free(map);
+}
+
+void	free_game(t_game *game)
+{
+	if (!game)
+		return ;
+	if (game->mlx)
+	{
+		free_image(game->mlx, game->no_img);
+		free_image(game->mlx, game->so_img);
+		free_image(game->mlx, game->we_img);
+		free_image(game->mlx, game->ea_img);
+		if (game->back)
+		{
+			free_image(game->mlx, game->back);
+			game->back = NULL;
+		}
+		if (game->mlx_win)
+		{
+			mlx_destroy_window(game->mlx, game->mlx_win);
+			game->mlx_win = NULL;
+		}
+		free(game->mlx);
+	}
+	free_map(game->map);
+	free(game);
+}
+
+void	free_image(void *mlx, t_image *image)
+{
+	if (image)
+	{
+		if (image->img)
+		{
+			mlx_destroy_image(mlx, image->img);
+			image->img = NULL;
+		}
+		free(image);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/22 15:06:29 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:13:45 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,17 @@ bool	is_one_or_space(const char *str)
 	return (true);
 }
 
-bool	error_color(char *rgb)
+bool	error_color(char **rgb, t_map *map, int j)
 {
 	int	i;
 
 	i = 0;
-	while (rgb[i])
+	while (rgb[j][i])
 	{
-		if (!ft_isdigit(rgb[i]))
-			error_exit("The color parameter should contain only numbers");
-		if (i >= 4)
-			error_exit("Numbers in color should be no more than 3");
+		if (!ft_isdigit(rgb[j][i]))
+			error_exit_map_array("Color params only numbers", map, rgb);
+		if (i >= 3)
+			error_exit_map_array("Numbers color no more 3", map, rgb);
 		i++;
 	}
 	return (true);

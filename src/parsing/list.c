@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:11:55 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/10 17:48:37 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:50:43 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,22 @@ void	ft_dbl_lstadd_back(t_dataList **lst, t_dataList *new_list)
 	tmp->next = new_list;
 }
 
-t_dataList	*ft_dbl_lstnew(char *str)
+t_dataList	*ft_dbl_lstnew(char *content)
 {
-	t_dataList	*new_obj;
+	t_dataList	*new_node;
 
-	new_obj = (t_dataList *)malloc(sizeof(t_dataList));
-	if (new_obj)
+	new_node = malloc(sizeof(t_dataList));
+	if (!new_node)
+		return (NULL);
+	new_node->string = ft_strdup(content);
+	if (!new_node->string)
 	{
-		new_obj->string = ft_strdup(str);
-		new_obj->prev = NULL;
-		new_obj->next = NULL;
+		free(new_node);
+		return (NULL);
 	}
-	return (new_obj);
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
 }
 
 int	ft_dbl_lstsize(t_dataList *start, t_dataList *end, int *cols)
@@ -82,4 +86,5 @@ void	free_data_list(t_dataList *head)
 		free(current);
 		current = next;
 	}
+	head = NULL;
 }

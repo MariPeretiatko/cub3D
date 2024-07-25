@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:10 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/22 13:34:16 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:19:31 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,13 @@ bool	check_corners(char **map)
 	return (false);
 }
 
-void	check_valid_map(char **map)
+void	check_valid_map(t_map *map)
 {
+	printf("here\n");
 	valid_symbols(map);
-	if (check_walls(map))
-		error_exit("Error: Empty space exists\n");
-	if (check_corners(map))
-		error_exit("Error: Empty corner exists\n");
+
+	if (check_walls(map->map))
+		error_exit_map("Error: Empty space exists", map);
+	if (check_corners(map->map))
+		error_exit_map("Error: Empty corner exists", map);
 }

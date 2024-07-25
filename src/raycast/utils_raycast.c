@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:00:57 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/22 16:12:17 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:12:55 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	get_texture_pixel(t_image *texture, int tex_x, int tex_y)
 	unsigned int	*pixel;
 
 	if (!texture || !texture->addr || tex_x < 0 || tex_y < 0
-		|| tex_x >= texture->width || tex_y >= texture->height)
+		|| tex_x >= TEXWIDTH || tex_y >= TEXHEIGHT)
 		return (0);
 	offset = tex_y * (texture->line_length / (texture->bits_per_pixel / 8))
 		+ tex_x;
@@ -63,20 +63,20 @@ void	add_plane_characters(t_game *game)
 	}
 }
 
-int	check_directions(t_game *game)
+t_image	*get_texture_directions(t_game *game)
 {
 	if (game->rc.side == 0)
 	{
 		if (game->rc.raydir_x > 0)
-			return (EAST);
+			return (game->ea_img);
 		else
-			return (WEST);
+			return (game->we_img);
 	}
 	else
 	{
 		if (game->rc.raydir_y > 0)
-			return (SOUTH);
+			return (game->so_img);
 		else
-			return (NORTH);
+			return (game->no_img);
 	}
 }

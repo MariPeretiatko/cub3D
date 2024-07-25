@@ -6,11 +6,14 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:18:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:14:04 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
+
+void	init_mlx_window(t_game *game);
+void	init_background(t_game *game);
 
 void	init_game(t_map *map)
 {
@@ -18,19 +21,11 @@ void	init_game(t_map *map)
 
 	game = ft_calloc(1, sizeof(t_game));
 	if (!game)
-	{
-		free_map(map);
-		error_exit("Failed to allocate memory for game\n");
-	}
+		error_exit_map("Failed to allocate memory for game", map);
 	game->map = map;
-	game->mlx = mlx_init();
-	game->mlx_win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT,
-			"cub3D");
-	game->back.img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	game->back.addr = mlx_get_data_addr(game->back.img,
-			&game->back.bits_per_pixel, &game->back.line_length,
-			&game->back.endian);
-	init_walls(game, game->map);
+	init_mlx_window(game);
+	init_background(game);
+	init_walls(game);
 	init_position_charactor(game);
 	add_plane_characters(game);
 	mlx_loop_hook(game->mlx, render, game);
@@ -38,6 +33,32 @@ void	init_game(t_map *map)
 	mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook,
 		game);
 	mlx_loop(game->mlx);
+}
+
+void	init_mlx_window(t_game *game)
+{
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		error_exit_game("Failed to initialize mlx", game);
+	game->mlx_win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT,
+			"cub3D");
+	if (!game->mlx_win)
+		error_exit_game("Failed to create mlx window", game);
+}
+
+void	init_background(t_game *game)
+{
+	game->back = malloc(sizeof(t_image));
+	if (!game->back)
+		error_exit_game("Failed to allocate memory for background", game);
+	game->back->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!game->back->img)
+		error_exit_game("Failed to create background image", game);
+	game->back->addr = mlx_get_data_addr(game->back->img,
+			&game->back->bits_per_pixel, &game->back->line_length,
+			&game->back->endian);
+	if (!game->back->addr)
+		error_exit_game("Failed to get background image address", game);
 }
 
 void	init_position_charactor(t_game *game)
@@ -62,31 +83,5 @@ void	init_position_charactor(t_game *game)
 			j++;
 		}
 		i++;
-	}
-}
-
-void	init_walls(t_game *game, t_map *map)
-{
-	int	w;
-	int	h;
-	int	i;
-
-	i = -1;
-	w = 512;
-	h = 512;
-	game->walls[0].img = mlx_xpm_file_to_image(game->mlx, map->ea, &w, &h);
-	game->walls[1].img = mlx_xpm_file_to_image(game->mlx, map->we, &w, &h);
-	game->walls[2].img = mlx_xpm_file_to_image(game->mlx, map->so, &w, &h);
-	game->walls[3].img = mlx_xpm_file_to_image(game->mlx, map->no, &w, &h);
-	if (!game->walls[0].img || !game->walls[1].img || !game->walls[2].img
-		|| !game->walls[3].img)
-		error_exit("textures");
-	while (++i < 4)
-	{
-		game->walls[i].addr = mlx_get_data_addr(game->walls[i].img,
-				&game->walls[i].bits_per_pixel, &game->walls[i].line_length,
-				&game->walls[i].endian);
-		game->walls[i].height = 512;
-		game->walls[i].width = 512;
 	}
 }

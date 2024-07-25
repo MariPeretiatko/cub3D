@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:21:11 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:58:17 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@
 # define SCREEN_HEIGHT 1000
 
 // # define texWidth 512
+# define TEXWIDTH 512
 // # define texHeight 512
+# define TEXHEIGHT 512
 
 # define KEY_W 119
 # define KEY_A 97
@@ -71,6 +73,14 @@ enum					e_Cardinal
 	NORTH
 };
 
+enum					e_Error
+{
+	_EAST = 0,
+	_WEST,
+	_SOUTH,
+	_NORTH
+};
+
 typedef struct s_dataList
 {
 	char				*string;
@@ -80,6 +90,7 @@ typedef struct s_dataList
 
 typedef struct s_map
 {
+	t_dataList			*data;
 	char				**map;
 	int					start_map;
 	int					rows;
@@ -94,12 +105,6 @@ typedef struct s_map
 	unsigned int		color_ceiling;
 }						t_map;
 
-typedef struct s_texture
-{
-	int					width;
-	int					height;
-	unsigned char		*pixels;
-}						t_texture;
 typedef struct s_image
 {
 	void				*img;
@@ -107,8 +112,6 @@ typedef struct s_image
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
-	int					width;
-	int					height;
 }						t_image;
 
 typedef struct s_player
@@ -163,25 +166,29 @@ typedef struct s_game
 	void				*mlx;
 	void				*mlx_win;
 	t_map				*map;
-	void				*wall;
-	void				*floor;
 	t_player			player;
 	t_raycast			rc;
-	t_image				back;
+	t_image				*back;
 	t_pressed			pressed;
-	t_image				walls[4];
+	t_image				*no_img;
+	t_image				*so_img;
+	t_image				*we_img;
+	t_image				*ea_img;
 }						t_game;
 
+void					print_data(t_dataList *data);
 void					init_game(t_map *map);
 t_map					*check_init_map(char *path);
 // free data
 void					free_map(t_map *map);
+void					free_game(t_game *game);
+void					free_image(void *mlx_ptr, t_image *image);
 
 // valid_map
 bool					valid_symbol(char c);
 bool					valid_symbol_character(char c);
-void					valid_symbols(char **map);
-void					check_valid_map(char **map);
+void					valid_symbols(t_map *map);
+void					check_valid_map(t_map *map);
 // bool valid_map(char **map);
 bool					check_walls(char **map);
 bool					is_wall_error(char **map, int x, int y);
@@ -198,7 +205,12 @@ void					free_data_list(t_dataList *list);
 
 // error
 void					error_exit(char *mes);
+void					error_exit_game(char *mes, t_game *game);
+void					error_exit_map(char *mes, t_map *map);
 void					print_data_list(t_dataList *data);
+void					error_exit_data_list(char *mes, t_dataList *data);
+void					error_exit_map_array(char *mes, t_map *map,
+							char **array);
 
 // global_utils
 void					free_string_array(char **string_array);
@@ -215,20 +227,19 @@ bool					is_one_or_space(const char *str);
 t_dataList				*check_start_map(t_map *map, t_dataList *data);
 t_dataList				*check_last_map(t_dataList *dataList);
 int						count_size_array(char **array);
-bool					error_color(char *rgb);
-void					check_all_init_params(t_map *map);
+bool					error_color(char **rgb, t_map *map, int j);
+bool					check_all_init_params(t_map *map);
 // char**	read_map(char *path);
 t_dataList				*read_map(char *path);
 void					init_map(t_map *map, t_dataList *data);
 
 // delete
 char					**ft_split(char const *s, char c);
-void					print_data(char **data);
+// void					print_data(char **data);
 void					print_test(t_map *map);
 
 // raycast
 
-void					init_walls(t_game *game, t_map *map);
 int						key_action(int keycode, t_game *game);
 bool					moves_execute(t_game *game);
 int						key_release_hook(int keycode, t_game *game);
@@ -248,11 +259,14 @@ void					calculate_step_and_dist(t_game *game);
 void					ray_direction_calculate(t_game *game, int x);
 int						get_texture_pixel(t_image *texture, int texX, int texY);
 int						get_pixel(t_image *img, int x, int y);
-int						check_directions(t_game *game);
+t_image					*get_texture_directions(t_game *game);
 void					render_floor_and_ceiling(t_game *game);
 void					add_plane_characters(t_game *game);
 void					init_position_charactor(t_game *game);
 void					my_mlx_pixel_put(t_image *image, int x, int y,
 							int color);
+
+void					init_south_texture(t_game *game);
+void					init_walls(t_game *game);
 
 #endif

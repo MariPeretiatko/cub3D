@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:44:42 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:18:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:19:20 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,54 +27,65 @@ void	check_parameter(t_map *map, char **parameters)
 	else if (!ft_strcmp(parameters[0], "C") && !map->ceiling)
 		map->ceiling = ft_strdup(parameters[1]);
 	else
-		error_exit("Incorrect parameters in the file");
+	{
+		error_exit_map_array("Incorrect parameters in the file",
+			map, parameters);
+	}
 }
 
 void	init_parameter(t_map *map, t_dataList *data)
 {
-	char	**parameters;
+	char	**params;
 	int		i;
 	int		size_params;
+	char	*tmp;
 
 	i = 0;
 	while (i < map->start_map)
 	{
 		if (ft_strcmp(data->string, "\n"))
 		{
-			data->string = remove_symb(data->string, '\n');
-			parameters = ft_split(data->string, ' ');
-			size_params = count_size_array(parameters);
-			if (size_params != 2 && ft_strcmp(parameters[2], " "))
-				error_exit("Invalid parameter format");
-			check_parameter(map, parameters);
-			free_string_array(parameters);
+			tmp = remove_symb(data->string, '\n');
+			free(data->string);
+			data->string = tmp;
+			params = ft_split(data->string, ' ');
+			size_params = count_size_array(params);
+			if (size_params != 2)
+				error_exit_map_array("Invalid parameter format", map, params);
+			check_parameter(map, params);
+			free_string_array(params);
 		}
 		data = data->next;
 		i++;
 	}
 }
 
-unsigned int	init_colors(char *color_string)
+unsigned int	init_colors(char *color_string, t_map *map)
 {
 	char			**rgb;
 	unsigned int	colors[3];
 	int				i;
 
 	i = 0;
-	rgb = ft_split(color_string, ',');
-	if (count_size_array(rgb) != 3)
-		error_exit("Wrong color format, there should be 3 numbers");
-	while (rgb[i])
+	if (color_string != NULL)
 	{
-		if (error_color(rgb[i]))
+		rgb = ft_split(color_string, ',');
+		if (count_size_array(rgb) != 3)
+			error_exit_map_array("Wrong color format 3 numbers", map, rgb);
+		while (rgb[i])
 		{
-			colors[i] = atoi(rgb[i]);
-			if (colors[i] < 0 || colors[i] > 255)
-				error_exit("The range must be from 0 to 255");
+			if (error_color(rgb, map, i))
+			{
+				colors[i] = atoi(rgb[i]);
+				if (colors[i] < 0 || colors[i] > 255)
+					error_exit_map_array("The range must 0 to 255", map, rgb);
+			}
+			i++;
 		}
-		i++;
+		free_string_array(rgb);
+		return ((colors[0] << 16) | (colors[1] << 8) | colors[2]);
 	}
-	return ((colors[0] << 16) | (colors[1] << 8) | colors[2]);
+	return (0);
 }
 
 void	init_map(t_map *map, t_dataList *data)
@@ -86,12 +97,15 @@ void	init_map(t_map *map, t_dataList *data)
 	last = check_last_map(data);
 	head = check_start_map(map, data);
 	init_parameter(map, data);
-	check_all_init_params(map);
-	map->color_floor = init_colors(map->floor);
-	map->color_ceiling = init_colors(map->ceiling);
+	if (!check_all_init_params(map))
+		error_exit_map("Not all parameters are initialized", map);
+	map->color_floor = init_colors(map->floor, map);
+	map->color_ceiling = init_colors(map->ceiling, map);
 	i = 0;
 	map->rows = ft_dbl_lstsize(head, last, &map->cols);
 	map->map = (char **)malloc((map->rows + 1) * sizeof(char *));
+	if (!map->map)
+		error_exit_map("Failed to allocate memory for map", map);
 	while (head != last->next)
 	{
 		map->map[i] = remove_symb(head->string, '\n');
@@ -108,16 +122,12 @@ t_map	*check_init_map(char *path)
 
 	data = read_map(path);
 	if (!data)
-	{
 		error_exit("Error reading map");
-	}
 	map = ft_calloc(1, sizeof(t_map));
 	if (!map)
-	{
-		perror("calloc");
-		exit(EXIT_FAILURE);
-	}
-	init_map(map, data);
-	check_valid_map(map->map);
+		error_exit_data_list("Failed to allocate memory for map", data);
+	map->data = data;
+	init_map(map, map->data);
+	check_valid_map(map);
 	return (map);
 }
