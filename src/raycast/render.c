@@ -6,11 +6,14 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:05:17 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 14:00:10 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:48:33 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
+
+void	render_floor_and_ceiling(t_game *game);
+void	render_walls(t_game *game, int x, int y);
 
 int	render(t_game *game)
 {

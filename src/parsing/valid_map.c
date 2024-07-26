@@ -6,11 +6,23 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:10 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 23:19:31 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:15:38 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
+
+bool	check_walls(char **map);
+bool	check_corners(char **map);
+
+void	check_valid_map(t_map *map)
+{
+	valid_symbols(map);
+	if (check_walls(map->map))
+		error_exit_map("Error: Empty space exists", map);
+	if (check_corners(map->map))
+		error_exit_map("Error: Empty corner exists", map);
+}
 
 bool	is_wall_error(char **map, int x, int y)
 {
@@ -68,15 +80,4 @@ bool	check_corners(char **map)
 		y++;
 	}
 	return (false);
-}
-
-void	check_valid_map(t_map *map)
-{
-	printf("here\n");
-	valid_symbols(map);
-
-	if (check_walls(map->map))
-		error_exit_map("Error: Empty space exists", map);
-	if (check_corners(map->map))
-		error_exit_map("Error: Empty corner exists", map);
 }

@@ -6,27 +6,11 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 23:13:45 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:23:34 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
-
-// free?
-void	free_string_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
 
 char	*remove_symb(char *input_string, char symb)
 {

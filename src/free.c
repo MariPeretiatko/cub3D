@@ -6,11 +6,26 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:12:12 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 23:05:44 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:24:20 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/cub3d.h"
+#include "../inc/cub3d.h"
+
+void	free_string_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		return ;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
 
 void	free_map(t_map *map)
 {
@@ -61,13 +76,12 @@ void	free_game(t_game *game)
 
 void	free_image(void *mlx, t_image *image)
 {
-	if (image)
+	if (!image)
+		return ;
+	if (image->img)
 	{
-		if (image->img)
-		{
-			mlx_destroy_image(mlx, image->img);
-			image->img = NULL;
-		}
-		free(image);
+		mlx_destroy_image(mlx, image->img);
+		image->img = NULL;
 	}
+	free(image);
 }

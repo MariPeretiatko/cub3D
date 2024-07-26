@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 23:14:04 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 16:01:26 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	init_mlx_window(t_game *game);
 void	init_background(t_game *game);
+void	init_position_charactor(t_game *game);
+int		exit_game(t_game *game);
 
 void	init_game(t_map *map)
 {
@@ -24,14 +26,15 @@ void	init_game(t_map *map)
 		error_exit_map("Failed to allocate memory for game", map);
 	game->map = map;
 	init_mlx_window(game);
-	init_background(game);
 	init_walls(game);
+	init_background(game);
 	init_position_charactor(game);
 	add_plane_characters(game);
 	mlx_loop_hook(game->mlx, render, game);
 	mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, game);
 	mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook,
 		game);
+	mlx_hook(game->mlx_win, 17, 1L << 0, exit_game, game);
 	mlx_loop(game->mlx);
 }
 
@@ -84,4 +87,11 @@ void	init_position_charactor(t_game *game)
 		}
 		i++;
 	}
+}
+
+int	exit_game(t_game *game)
+{
+	free_game(game);
+	exit(0);
+	return (0);
 }

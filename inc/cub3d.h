@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/25 17:58:17 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 15:44:21 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,13 @@
 # define PINK 0xffc0cb
 # define BLUE 0x0100fa
 # define GREEN 0x00fa01
-# define RED 0xfa0100
+# define REDD 0xfa0100
 # define YELLOW 0xffff00
 # define FL 0xa9a9a9
 # define CEAL 0xf5f5f5
+
+# define RESET "\033[0m"
+# define RED "\033[1;31m"
 
 # define MOVE_SPEED 0.03
 # define ROTATION_SPEED 0.02
@@ -44,9 +47,7 @@
 # define SCREEN_WIDTH 1800
 # define SCREEN_HEIGHT 1000
 
-// # define texWidth 512
 # define TEXWIDTH 512
-// # define texHeight 512
 # define TEXHEIGHT 512
 
 # define KEY_W 119
@@ -64,22 +65,6 @@
 # include <X11/keysym.h>
 
 # define PI 3.14
-
-enum					e_Cardinal
-{
-	EAST = 0,
-	WEST,
-	SOUTH,
-	NORTH
-};
-
-enum					e_Error
-{
-	_EAST = 0,
-	_WEST,
-	_SOUTH,
-	_NORTH
-};
 
 typedef struct s_dataList
 {
@@ -176,72 +161,65 @@ typedef struct s_game
 	t_image				*ea_img;
 }						t_game;
 
-void					print_data(t_dataList *data);
-void					init_game(t_map *map);
-t_map					*check_init_map(char *path);
-// free data
-void					free_map(t_map *map);
-void					free_game(t_game *game);
-void					free_image(void *mlx_ptr, t_image *image);
-
-// valid_map
-bool					valid_symbol(char c);
-bool					valid_symbol_character(char c);
-void					valid_symbols(t_map *map);
-void					check_valid_map(t_map *map);
-// bool valid_map(char **map);
-bool					check_walls(char **map);
-bool					is_wall_error(char **map, int x, int y);
-bool					check_corners(char **map);
-bool					valid_symbol_character(char c);
-
 // dataList
+// parsing/list.c
 t_dataList				*ft_dbl_lstlast(t_dataList *lst);
-void					ft_dbl_lstadd_back(t_dataList **lst, t_dataList *new);
-t_dataList				*ft_dbl_lstnew(char *str);
+void					ft_dbl_lstadd_back(t_dataList **lst,
+							t_dataList *new_list);
+t_dataList				*ft_dbl_lstnew(char *content);
 int						ft_dbl_lstsize(t_dataList *start, t_dataList *end,
 							int *cols);
-void					free_data_list(t_dataList *list);
+void					free_data_list(t_dataList *head);
 
-// error
-void					error_exit(char *mes);
-void					error_exit_game(char *mes, t_game *game);
-void					error_exit_map(char *mes, t_map *map);
-void					print_data_list(t_dataList *data);
-void					error_exit_data_list(char *mes, t_dataList *data);
-void					error_exit_map_array(char *mes, t_map *map,
-							char **array);
-
-// global_utils
-void					free_string_array(char **string_array);
-char					*remove_symb(char *input_string, char symb);
-char					*ft_strjoin(char const *s1, char const *s2);
-//? libft
-
-// utils check map
-
+// valid_map
+// parsing/check_map.c || valid_map.c || valid_symbol.c
 int						check_map_name(const char *av);
-void					check_parameter(t_map *map, char **parameters);
-void					init_parameter(t_map *map, t_dataList *data);
-bool					is_one_or_space(const char *str);
+bool					valid_symbol(char c);
+void					valid_symbols(t_map *map);
+void					check_valid_map(t_map *map);
+bool					valid_symbol_character(char c);
+
+// init_map
+// parsing/check_map.c ||
+t_map					*check_init_map(char *path);
+t_dataList				*read_map(char *path);
+bool					check_all_init_params(t_map *map);
 t_dataList				*check_start_map(t_map *map, t_dataList *data);
 t_dataList				*check_last_map(t_dataList *dataList);
+
+// global_utils_parsing
+// parsing/utils.c
 int						count_size_array(char **array);
 bool					error_color(char **rgb, t_map *map, int j);
-bool					check_all_init_params(t_map *map);
-// char**	read_map(char *path);
-t_dataList				*read_map(char *path);
-void					init_map(t_map *map, t_dataList *data);
+char					*remove_symb(char *input_string, char symb);
+bool					is_one_or_space(const char *str);
 
-// delete
-char					**ft_split(char const *s, char c);
-// void					print_data(char **data);
-void					print_test(t_map *map);
+// raycasting
+// raycast/raycast.c || render.c
+int						render(t_game *game);
+void					ray_direction_calculate(t_game *game, int x);
+void					calculate_step_and_dist(t_game *game);
+void					set_ray_steps(t_game *game);
+void					calculate_wall_parameters(t_game *game);
+void					calculate_texture_coordinates(t_game *game);
 
-// raycast
+// utils raycasting
+// raycast/utils_raycast.c
+void					my_mlx_pixel_put(t_image *image, int x, int y,
+							int color);
+int						get_texture_pixel(t_image *texture, int tex_x,
+							int tex_y);
+void					add_plane_characters(t_game *game);
+t_image					*get_texture_directions(t_game *game);
 
+// init_game
+// game/init_game.c || init_wals.c
+void					init_game(t_map *map);
+void					init_walls(t_game *game);
+
+// key_action
+// game/input_game.c || movement_game.c || rotate_game.c
 int						key_action(int keycode, t_game *game);
-bool					moves_execute(t_game *game);
 int						key_release_hook(int keycode, t_game *game);
 int						key_hook(int keycode, t_game *game);
 void					move_right(t_game *game);
@@ -250,23 +228,23 @@ void					rotate_left(t_game *game);
 void					rotate_right(t_game *game);
 void					move_back(t_game *game);
 void					move_front(t_game *game);
-int						render(t_game *game);
-void					render_walls(t_game *game, int x, int y);
-void					calculate_texture_coordinates(t_game *game);
-void					calculate_wall_parameters(t_game *game);
-void					set_ray_steps(t_game *game);
-void					calculate_step_and_dist(t_game *game);
-void					ray_direction_calculate(t_game *game, int x);
-int						get_texture_pixel(t_image *texture, int texX, int texY);
-int						get_pixel(t_image *img, int x, int y);
-t_image					*get_texture_directions(t_game *game);
-void					render_floor_and_ceiling(t_game *game);
-void					add_plane_characters(t_game *game);
-void					init_position_charactor(t_game *game);
-void					my_mlx_pixel_put(t_image *image, int x, int y,
-							int color);
+bool					moves_execute(t_game *game);
 
-void					init_south_texture(t_game *game);
-void					init_walls(t_game *game);
+// error
+// error.c
+void					error_exit(char *mes);
+void					error_exit_game(char *mes, t_game *game);
+void					error_exit_map(char *mes, t_map *map);
+void					error_exit_data_list(char *mes, t_dataList *data);
+void					error_exit_map_array(char *mes, t_map *map,
+							char **array);
+
+// global free data
+// free.c
+void					free_string_array(char **array);
+void					free_map(t_map *map);
+void					free_game(t_game *game);
+void					free_image(void *mlx, t_image *image);
+void					free_data_list(t_dataList *head);
 
 #endif
