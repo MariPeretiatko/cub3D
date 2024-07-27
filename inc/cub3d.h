@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 11:09:52 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:00:33 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 
 # define MOVE_SPEED 0.03
 # define ROTATION_SPEED 0.02
+# define ROTATION_SPEED_MOUSE 0.002
 
 # define SCREEN_WIDTH 1800
 # define SCREEN_HEIGHT 1000
@@ -223,6 +224,7 @@ void					init_walls(t_game *game);
 // game/input_game.c || movement_game.c || rotate_game.c
 int						key_action(int keycode, t_game *game);
 int						key_release_hook(int keycode, t_game *game);
+int						mouse_hook(int keycode, t_game *game);
 bool					moves_execute(t_game *game);
 void					move_right(t_game *game);
 void					move_left(t_game *game);

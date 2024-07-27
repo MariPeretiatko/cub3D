@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:24:06 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 13:55:18 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:00:12 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,11 @@ bool	moves_execute(t_game *game)
 	if (game->pressed.right)
 		rotate_right(game);
 	return (true);
+}
+
+int	mouse_hook(int keycode, t_game *game)
+{
+	(void)game;
+	printf("%d here\n", keycode);
+	return (0);
 }
