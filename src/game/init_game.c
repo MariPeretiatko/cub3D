@@ -6,16 +6,15 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 16:01:26 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:10:59 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void	init_mlx_window(t_game *game);
-void	init_background(t_game *game);
-void	init_position_charactor(t_game *game);
-int		exit_game(t_game *game);
+static void	init_mlx_window(t_game *game);
+static void	init_background(t_game *game);
+static void	init_position_charactor(t_game *game);
 
 void	init_game(t_map *map)
 {
@@ -38,7 +37,7 @@ void	init_game(t_map *map)
 	mlx_loop(game->mlx);
 }
 
-void	init_mlx_window(t_game *game)
+static void	init_mlx_window(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
@@ -49,7 +48,7 @@ void	init_mlx_window(t_game *game)
 		error_exit_game("Failed to create mlx window", game);
 }
 
-void	init_background(t_game *game)
+static void	init_background(t_game *game)
 {
 	game->back = malloc(sizeof(t_image));
 	if (!game->back)
@@ -64,7 +63,7 @@ void	init_background(t_game *game)
 		error_exit_game("Failed to get background image address", game);
 }
 
-void	init_position_charactor(t_game *game)
+static void	init_position_charactor(t_game *game)
 {
 	int	i;
 	int	j;

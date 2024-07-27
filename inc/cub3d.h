@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 15:44:21 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:09:52 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@
 
 # define TEXWIDTH 512
 # define TEXHEIGHT 512
+
+# define DISTANCE 0.2
 
 # define KEY_W 119
 # define KEY_A 97
@@ -221,14 +223,13 @@ void					init_walls(t_game *game);
 // game/input_game.c || movement_game.c || rotate_game.c
 int						key_action(int keycode, t_game *game);
 int						key_release_hook(int keycode, t_game *game);
-int						key_hook(int keycode, t_game *game);
+bool					moves_execute(t_game *game);
 void					move_right(t_game *game);
 void					move_left(t_game *game);
-void					rotate_left(t_game *game);
-void					rotate_right(t_game *game);
 void					move_back(t_game *game);
 void					move_front(t_game *game);
-bool					moves_execute(t_game *game);
+void					rotate_left(t_game *game);
+void					rotate_right(t_game *game);
 
 // error
 // error.c
@@ -246,5 +247,7 @@ void					free_map(t_map *map);
 void					free_game(t_game *game);
 void					free_image(void *mlx, t_image *image);
 void					free_data_list(t_dataList *head);
+
+int						exit_game(t_game *game);
 
 #endif

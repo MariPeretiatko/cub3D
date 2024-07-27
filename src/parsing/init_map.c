@@ -6,16 +6,16 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:44:42 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 16:09:12 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:05:23 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void			init_map(t_map *map, t_dataList *data);
-void			init_parameter(t_map *map, t_dataList *data);
-void			check_parameter(t_map *map, char **params);
-unsigned int	init_colors(char *color_string, t_map *map);
+static void			init_map(t_map *map, t_dataList *data);
+static void			init_parameter(t_map *map, t_dataList *data);
+static void			check_parameter(t_map *map, char **params);
+static unsigned int	init_colors(char *color_string, t_map *map);
 
 t_map	*check_init_map(char *path)
 {
@@ -34,7 +34,7 @@ t_map	*check_init_map(char *path)
 	return (map);
 }
 
-void	init_map(t_map *map, t_dataList *data)
+static void	init_map(t_map *map, t_dataList *data)
 {
 	t_dataList	*last;
 	t_dataList	*head;
@@ -61,7 +61,7 @@ void	init_map(t_map *map, t_dataList *data)
 	map->map[i] = NULL;
 }
 
-void	init_parameter(t_map *map, t_dataList *data)
+static void	init_parameter(t_map *map, t_dataList *data)
 {
 	char	**params;
 	int		i;
@@ -88,7 +88,7 @@ void	init_parameter(t_map *map, t_dataList *data)
 	}
 }
 
-void	check_parameter(t_map *map, char **params)
+static void	check_parameter(t_map *map, char **params)
 {
 	if (!ft_strcmp(params[0], "NO") && !map->no)
 		map->no = ft_strdup(params[1]);
@@ -106,7 +106,7 @@ void	check_parameter(t_map *map, char **params)
 		error_exit_map_array("Incorrect parameters in the file", map, params);
 }
 
-unsigned int	init_colors(char *color_string, t_map *map)
+static unsigned int	init_colors(char *color_string, t_map *map)
 {
 	char			**rgb;
 	unsigned int	colors[3];

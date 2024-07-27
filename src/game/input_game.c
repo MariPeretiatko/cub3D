@@ -6,11 +6,13 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:24:06 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/23 16:20:52 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:09:32 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
+
+static int	key_hook(int keycode, t_game *game);
 
 int	key_action(int keycode, t_game *game)
 {
@@ -18,6 +20,25 @@ int	key_action(int keycode, t_game *game)
 		|| KEY_RIGHT == keycode || KEY_W == keycode || KEY_S == keycode
 		|| KEY_ESC == keycode)
 		key_hook(keycode, game);
+	return (0);
+}
+
+static int	key_hook(int keycode, t_game *game)
+{
+	if (keycode == KEY_ESC)
+		exit_game(game);
+	if (keycode == KEY_W)
+		game->pressed.w = true;
+	if (keycode == KEY_S)
+		game->pressed.s = true;
+	if (keycode == KEY_A)
+		game->pressed.a = true;
+	if (keycode == KEY_D)
+		game->pressed.d = true;
+	if (keycode == KEY_RIGHT)
+		game->pressed.right = true;
+	if (keycode == KEY_LEFT)
+		game->pressed.left = true;
 	return (0);
 }
 
@@ -53,23 +74,4 @@ bool	moves_execute(t_game *game)
 	if (game->pressed.right)
 		rotate_right(game);
 	return (true);
-}
-
-int	key_hook(int keycode, t_game *game)
-{
-	if (keycode == KEY_ESC)
-		exit(0);
-	if (keycode == KEY_W)
-		game->pressed.w = true;
-	if (keycode == KEY_S)
-		game->pressed.s = true;
-	if (keycode == KEY_A)
-		game->pressed.a = true;
-	if (keycode == KEY_D)
-		game->pressed.d = true;
-	if (keycode == KEY_RIGHT)
-		game->pressed.right = true;
-	if (keycode == KEY_LEFT)
-		game->pressed.left = true;
-	return (0);
 }

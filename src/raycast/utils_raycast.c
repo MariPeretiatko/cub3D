@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:00:57 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/24 23:12:55 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/26 18:01:33 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ void	add_plane_characters(t_game *game)
 	plane = game->player.direction;
 	if (plane == 'S')
 	{
-		game->player.dir_y = 1;
-		game->player.plane_x = 0.66;
+		game->player.dir_x = 1;
+		game->player.plane_y = -0.66;
 	}
 	else if (plane == 'N')
 	{
-		game->player.dir_x = 1;
-		game->player.plane_y = -0.66;
+		game->player.dir_x = -1;
+		game->player.plane_y = 0.66;
 	}
 	else if (plane == 'E')
 	{
-		game->player.dir_x = 1;
-		game->player.plane_y = -0.66;
+		game->player.dir_y = 1;
+		game->player.plane_x = 0.66;
 	}
 	else if (plane == 'W')
 	{
-		game->player.dir_x = -1;
-		game->player.plane_y = 0.66;
+		game->player.dir_y = -1;
+		game->player.plane_x = -0.66;
 	}
 }
 
@@ -68,15 +68,15 @@ t_image	*get_texture_directions(t_game *game)
 	if (game->rc.side == 0)
 	{
 		if (game->rc.raydir_x > 0)
-			return (game->ea_img);
+			return (game->so_img);
 		else
-			return (game->we_img);
+			return (game->no_img);
 	}
 	else
 	{
 		if (game->rc.raydir_y > 0)
-			return (game->so_img);
+			return (game->ea_img);
 		else
-			return (game->no_img);
+			return (game->we_img);
 	}
 }

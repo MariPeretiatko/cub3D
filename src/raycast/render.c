@@ -6,14 +6,14 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:05:17 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 14:48:33 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:04:27 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void	render_floor_and_ceiling(t_game *game);
-void	render_walls(t_game *game, int x, int y);
+static void	render_floor_and_ceiling(t_game *game);
+static void	render_walls(t_game *game, int x, int y);
 
 int	render(t_game *game)
 {
@@ -40,7 +40,7 @@ int	render(t_game *game)
 	return (0);
 }
 
-void	render_floor_and_ceiling(t_game *game)
+static void	render_floor_and_ceiling(t_game *game)
 {
 	unsigned int	*dst;
 	int				i;
@@ -54,7 +54,7 @@ void	render_floor_and_ceiling(t_game *game)
 		*dst++ = game->map->color_floor;
 }
 
-void	render_walls(t_game *game, int x, int y)
+static void	render_walls(t_game *game, int x, int y)
 {
 	game->rc.tex_y = (int)game->rc.tex_pos & (TEXHEIGHT - 1);
 	game->rc.tex_pos += game->rc.step;

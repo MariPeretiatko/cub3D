@@ -6,13 +6,23 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 19:54:21 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 15:42:08 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:06:34 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void	init_texture(t_game *game, t_image **texture, char *path_texture)
+static void	init_texture(t_game *game, t_image **texture, char *path_texture);
+
+void	init_walls(t_game *game)
+{
+	init_texture(game, &game->so_img, game->map->so);
+	init_texture(game, &game->no_img, game->map->no);
+	init_texture(game, &game->we_img, game->map->we);
+	init_texture(game, &game->ea_img, game->map->ea);
+}
+
+static void	init_texture(t_game *game, t_image **texture, char *path_texture)
 {
 	int	size;
 
@@ -27,12 +37,4 @@ void	init_texture(t_game *game, t_image **texture, char *path_texture)
 			&(*texture)->endian);
 	if (!(*texture)->addr)
 		error_exit_game("Problem with getting image address", game);
-}
-
-void	init_walls(t_game *game)
-{
-	init_texture(game, &game->so_img, game->map->so);
-	init_texture(game, &game->no_img, game->map->no);
-	init_texture(game, &game->we_img, game->map->we);
-	init_texture(game, &game->ea_img, game->map->ea);
 }
