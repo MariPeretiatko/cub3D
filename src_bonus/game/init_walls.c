@@ -6,13 +6,11 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 19:54:21 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 11:06:34 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 19:47:56 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
-
-static void	init_texture(t_game *game, t_image **texture, char *path_texture);
 
 void	init_walls(t_game *game)
 {
@@ -22,7 +20,7 @@ void	init_walls(t_game *game)
 	init_texture(game, &game->ea_img, game->map->ea);
 }
 
-static void	init_texture(t_game *game, t_image **texture, char *path_texture)
+void	init_texture(t_game *game, t_image **texture, char *path_texture)
 {
 	int	size;
 

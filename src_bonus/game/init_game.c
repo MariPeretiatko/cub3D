@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 14:39:09 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 21:19:43 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ void	init_game(t_map *map)
 	mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, game);
 	mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook,
 		game);
-	printf("init_game\n");
-	printf("init_game\n");
-	mlx_mouse_hook(game->mlx_win, mouse_hook, &game);
+	init_event_mouse(game);
 	mlx_hook(game->mlx_win, 17, 1L << 0, exit_game, game);
 	mlx_loop(game->mlx);
 }

@@ -1,7 +1,7 @@
 NO ./textures/wall2-_1_.xpm      
 WE ./textures/wall3.xpm
 SO ./textures/flowers.xpm
-EA ./textures/frost.xpm
+EA ./textures/railgun-svg.xpm
 F 0,1,1
 
 
@@ -9,7 +9,7 @@ F 0,1,1
 C 250,0,112
 
 111111
-1S00 11
+1S0011
 11111 1
 1111111
 

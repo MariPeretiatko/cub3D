@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 14:00:33 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 22:52:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,30 @@
 # define YELLOW 0xffff00
 # define FL 0xa9a9a9
 # define CEAL 0xf5f5f5
+# define WHITE 0xffffff
+
 
 # define RESET "\033[0m"
 # define RED "\033[1;31m"
 
-# define MOVE_SPEED 0.03
+# define MOVE_SPEED 0.04
 # define ROTATION_SPEED 0.02
-# define ROTATION_SPEED_MOUSE 0.002
+// # define ROTATION_SPEED_MOUSE 0.002
 
-# define SCREEN_WIDTH 1800
-# define SCREEN_HEIGHT 1000
+# define SCREEN_WIDTH 1920
+# define SCREEN_HEIGHT 1080
 
 # define TEXWIDTH 512
 # define TEXHEIGHT 512
 
 # define DISTANCE 0.2
+# define MIDWID SCREEN_WIDTH / 2
+# define MIDHG SCREEN_HEIGHT / 2
+
+# define KEY_MOUSE_LEFT 1
+# define KEY_MOUSE_RIGHT 3
+# define MOUSE_SDOWN 4
+# define MOUSE_SUP 5
 
 # define KEY_W 119
 # define KEY_A 97
@@ -162,7 +171,12 @@ typedef struct s_game
 	t_image				*so_img;
 	t_image				*we_img;
 	t_image				*ea_img;
+	t_image				*gun;
 }						t_game;
+
+void					init_texture(t_game *game, t_image **texture,
+							char *path_texture);
+void					render_gun(t_game *game);
 
 // dataList
 // parsing/list.c
@@ -224,7 +238,6 @@ void					init_walls(t_game *game);
 // game/input_game.c || movement_game.c || rotate_game.c
 int						key_action(int keycode, t_game *game);
 int						key_release_hook(int keycode, t_game *game);
-int						mouse_hook(int keycode, t_game *game);
 bool					moves_execute(t_game *game);
 void					move_right(t_game *game);
 void					move_left(t_game *game);
@@ -232,6 +245,12 @@ void					move_back(t_game *game);
 void					move_front(t_game *game);
 void					rotate_left(t_game *game);
 void					rotate_right(t_game *game);
+// bonus
+// int						mouse_hook(int keycode, t_game *game);
+// mouse event
+// game/input_mouse.c
+// int						mouse_move(int x, int y, t_game *game);
+void					init_event_mouse(t_game *game);
 
 // error
 // error.c

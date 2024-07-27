@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:05:17 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 11:04:27 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 22:58:00 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int	render(t_game *game)
 		while (++y < game->rc.draw_end)
 		{
 			render_walls(game, x, y);
+
 		}
 	}
+	// render_gun(game);
 	moves_execute(game);
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->back->img, 0, 0);
 	return (0);

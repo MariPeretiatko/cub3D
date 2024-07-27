@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:49:33 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 14:39:39 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:04:04 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int ac, char *av[])
 {
-	printf("main\n");
 	if (ac != 2)
 		error_exit("Problems with arguments");
 	if (!check_map_name(av[1]))
