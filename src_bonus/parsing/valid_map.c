@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:10 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 12:37:53 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:06:06 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static bool	check_corners(char **map);
 
 void	check_valid_map(t_map *map)
 {
-	valid_symbols(map);
+	valid_symbols_door(map);
 	if (check_walls(map->map))
 		error_exit_map("Invalid wall structure or internal spaces", map);
 	if (check_corners(map->map))

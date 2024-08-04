@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 19:54:21 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 22:46:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:37:58 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 void	init_walls(t_game *game)
 {
-	init_texture(game, &game->so_img, game->map->so);
-	init_texture(game, &game->no_img, game->map->no);
-	init_texture(game, &game->we_img, game->map->we);
-	init_texture(game, &game->ea_img, game->map->ea);
-	init_texture(game, &game->gun,
-		"/home/mperetia/sgoinfre/lasr_github/textures/railgun123.xpm");
+	init_texture(game, &game->so_img, game->map->so, TEXHEIGHT);
+	init_texture(game, &game->no_img, game->map->no, TEXHEIGHT);
+	init_texture(game, &game->we_img, game->map->we, TEXHEIGHT);
+	init_texture(game, &game->ea_img, game->map->ea, TEXHEIGHT);
 }
 
-void	init_texture(t_game *game, t_image **texture, char *path_texture)
+void	init_texture(t_game *game, t_image **texture, char *path_texture,
+		int size_texture)
 {
 	int	size;
 
-	size = TEXWIDTH;
+	size = size_texture;
 	*texture = ft_calloc(1, sizeof(t_image));
 	(*texture)->img = mlx_xpm_file_to_image(game->mlx, path_texture, &size,
 			&size);

@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:24:06 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 18:54:25 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:58:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ static int	key_hook(int keycode, t_game *game);
 
 int	key_action(int keycode, t_game *game)
 {
+	// printf("%d", keycode);
 	if (KEY_A == keycode || KEY_LEFT == keycode || KEY_D == keycode
 		|| KEY_RIGHT == keycode || KEY_W == keycode || KEY_S == keycode
-		|| KEY_ESC == keycode)
+		|| KEY_ESC == keycode || KEY_SPACE == keycode)
 		key_hook(keycode, game);
 	return (0);
 }
@@ -39,6 +40,10 @@ static int	key_hook(int keycode, t_game *game)
 		game->pressed.right = true;
 	if (keycode == KEY_LEFT)
 		game->pressed.left = true;
+	if (keycode == KEY_LEFT)
+		game->pressed.left = true;
+	if (keycode == KEY_SPACE)
+		game->pressed.space = true;
 	return (0);
 }
 
@@ -73,5 +78,35 @@ bool	moves_execute(t_game *game)
 		rotate_left(game);
 	if (game->pressed.right)
 		rotate_right(game);
+	if (game->pressed.space)
+	{
+		
+         int player_x = (int)game->player.pos_x;
+        int player_y = (int)game->player.pos_y;
+
+        if (game->map->map[player_x + 1][player_y] == 'D' || game->map->map[player_x + 1][player_y] == 'O')
+            toggle_door(game, player_x + 1, player_y);
+        else if (game->map->map[player_x - 1][player_y] == 'D' || game->map->map[player_x - 1][player_y] == 'O')
+            toggle_door(game, player_x - 1, player_y);
+        else if (game->map->map[player_x][player_y + 1] == 'D' || game->map->map[player_x][player_y + 1] == 'O')
+            toggle_door(game, player_x, player_y + 1);
+        else if (game->map->map[player_x][player_y - 1] == 'D' || game->map->map[player_x][player_y - 1] == 'O')
+            toggle_door(game, player_x, player_y - 1);
+        
+        game->pressed.space = false;
+		// toggle_door(game);
+		// int player_x = (int)game->player.pos_x;
+        // int player_y = (int)game->player.pos_y;
+
+        // if (game->map->map[player_x + 1][player_y] == 'D' || game->map->map[player_x + 1][player_y] == 'O')
+        //     toggle_door(game, player_x + 1, player_y);
+        // else if (game->map->map[player_x - 1][player_y] == 'D' || game->map->map[player_x - 1][player_y] == 'O')
+        //     toggle_door(game, player_x - 1, player_y);
+        // else if (game->map->map[player_x][player_y + 1] == 'D' || game->map->map[player_x][player_y + 1] == 'O')
+        //     toggle_door(game, player_x, player_y + 1);
+        // else if (game->map->map[player_x][player_y - 1] == 'D' || game->map->map[player_x][player_y - 1] == 'O')
+        //     toggle_door(game, player_x, player_y - 1);
+		// game->pressed.space = false;
+	}
 	return (true);
 }

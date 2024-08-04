@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 22:52:50 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:48:06 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@
 # define FL 0xa9a9a9
 # define CEAL 0xf5f5f5
 # define WHITE 0xffffff
-
+# define BLACK 0x000000
 
 # define RESET "\033[0m"
 # define RED "\033[1;31m"
 
-# define MOVE_SPEED 0.04
-# define ROTATION_SPEED 0.02
+# define MOVE_SPEED 0.03
+# define ROTATION_SPEED 0.025
+# define DOOR_SPEED 10
 // # define ROTATION_SPEED_MOUSE 0.002
 
 # define SCREEN_WIDTH 1920
@@ -53,14 +54,18 @@
 # define TEXWIDTH 512
 # define TEXHEIGHT 512
 
+# define MINI_CUBE 10
+# define MAP_RADIUS 100
+# define EMBLEMSIZE 80
+
 # define DISTANCE 0.2
-# define MIDWID SCREEN_WIDTH / 2
-# define MIDHG SCREEN_HEIGHT / 2
+# define MIDWID (SCREEN_WIDTH / 2)
+# define MIDHG (SCREEN_HEIGHT / 2)
 
 # define KEY_MOUSE_LEFT 1
 # define KEY_MOUSE_RIGHT 3
-# define MOUSE_SDOWN 4
-# define MOUSE_SUP 5
+# define MOUSE_SUP 4
+# define MOUSE_SDOWN 5
 
 # define KEY_W 119
 # define KEY_A 97
@@ -69,6 +74,7 @@
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define KEY_SPACE 32
 # define KEY_PRESS KeyPress
 # define KEY_RELEASE KeyRelease
 
@@ -77,6 +83,14 @@
 # include <X11/keysym.h>
 
 # define PI 3.14
+
+enum					e_Weapon
+{
+	SHOTGUN = 0,
+	ROCKETL,
+	RAILGUN,
+	BFG
+};
 
 typedef struct s_dataList
 {
@@ -90,8 +104,8 @@ typedef struct s_map
 	t_dataList			*data;
 	char				**map;
 	int					start_map;
-	int					rows;
-	int					cols;
+	int					height;
+	int					width;
 	char				*no;
 	char				*so;
 	char				*we;
@@ -157,7 +171,17 @@ typedef struct s_pressed
 	bool				a;
 	bool				s;
 	bool				d;
+	bool				space;
 }						t_pressed;
+
+typedef struct s_door
+{
+	int					x;
+	int					y;
+	int is_open;   // 0 - закрыта, 1 - открыта
+	double offset; // смещение для анимации
+}						t_door;
+
 typedef struct s_game
 {
 	void				*mlx;
@@ -171,12 +195,45 @@ typedef struct s_game
 	t_image				*so_img;
 	t_image				*we_img;
 	t_image				*ea_img;
-	t_image				*gun;
+	int					type_weapon;
+	t_image				*railgun;
+	t_image				*shotgun;
+	t_image				*rocketl;
+	t_image				*bfg;
+	t_image				*current_weapon;
+	t_image				*door;
+	int door_x;
+	int door_y;
+	t_image				*open_door;
+	int					show_panel;
+
+	t_image				*e_shotgun;
+	t_image				*e_railgun;
+	t_image				*e_rocketl;
+	t_image				*e_bfg;
+
+	t_door				*doors;
+	int					num_doors;
+	int					door_open;
+	double				door_offset;
 }						t_game;
 
 void					init_texture(t_game *game, t_image **texture,
-							char *path_texture);
+							char *path_texture, int size_texture);
 void					render_gun(t_game *game);
+void					render_weapon(t_game *game);
+void					render_minimap(t_game *game);
+void					draw_minimap(t_game *game, t_map *map,
+							t_player *player);
+t_image					*get_type_weapon(t_game *game);
+void					init_doors(t_game *game);
+// void					toggle_door(t_game *game, int door_index);
+void					update_doors(t_game *game, double delta_time);
+void					update_door_animation(t_game *game);
+void					render_door(t_game *game, int x, int y);
+// void					toggle_door(t_game *game);
+void					toggle_door(t_game *game, int x, int y);
+void render_door_open(t_game *game, int x, int y);
 
 // dataList
 // parsing/list.c
@@ -195,6 +252,10 @@ bool					valid_symbol(char c);
 void					valid_symbols(t_map *map);
 void					check_valid_map(t_map *map);
 bool					valid_symbol_character(char c);
+// bonus
+void					check_map_row_door(t_map *map, const char *row,
+							int *player_count, int row_index);
+void					valid_symbols_door(t_map *map);
 
 // init_map
 // parsing/check_map.c ||

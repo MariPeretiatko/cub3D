@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:44:42 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/27 11:05:23 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/07/28 12:11:45 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	init_map(t_map *map, t_dataList *data)
 	map->color_floor = init_colors(map->floor, map);
 	map->color_ceiling = init_colors(map->ceiling, map);
 	i = 0;
-	map->rows = ft_dbl_lstsize(head, last, &map->cols);
-	map->map = (char **)malloc((map->rows + 1) * sizeof(char *));
+	map->height = ft_dbl_lstsize(head, last, &map->width);
+	map->map = (char **)malloc((map->height + 1) * sizeof(char *));
 	if (!map->map)
 		error_exit_map("Failed to allocate memory for map", map);
 	while (head != last->next)
