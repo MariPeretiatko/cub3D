@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/28 23:59:58 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:10:05 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void draw_circle(t_game *game, int x, int y, int radius) {
 }
 
 void draw_minimap(t_game *game, t_map *map, t_player *player) {
-    int cell_size = 10; // Size of each cell in the minimap
-    int minimap_radius = 50; // Radius of the minimap
+    int cell_size = 15; // Size of each cell in the minimap
+    int minimap_radius = 100; // Radius of the minimap
     int minimap_x = 75; // X position for minimap (bottom left corner)
     int minimap_y = 75; // Y position for minimap (bottom left corner)
     int minimap_diameter = minimap_radius * 2;
@@ -52,8 +52,8 @@ void draw_minimap(t_game *game, t_map *map, t_player *player) {
         for (int j = 0; j < map->width; j++) {
             if (map->map[i][j] == '1') { // Wall
                 // Calculate the wall's position relative to the player
-                double wall_x = (j - player->pos_x) * cell_size;
-                double wall_y = (i - player->pos_y) * cell_size;
+                double wall_x = (j - player->pos_y) * cell_size;
+                double wall_y = (i - player->pos_x) * cell_size;
 
                 // Translate the coordinates to the minimap position
                 int screen_x = minimap_left + minimap_radius + (int)wall_x;
@@ -65,8 +65,10 @@ void draw_minimap(t_game *game, t_map *map, t_player *player) {
 
                     // Draw the wall as a small rectangle
                     for (int y = 0; y < cell_size; y++) {
-                        for (int x = 0; x < cell_size; x++) {
-                            my_mlx_pixel_put(game->back, screen_x + x - cell_size / 2, screen_y + y - cell_size / 2, color);
+                        for (int x = 0; x < cell_size; x++) 
+                        {
+                            if(screen_x + x > minimap_radius && minimap_radius <  screen_y + y)
+                                my_mlx_pixel_put(game->back, screen_x + x , screen_y + y , color);
                         }
                     }
                 }
