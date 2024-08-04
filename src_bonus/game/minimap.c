@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 18:10:05 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:59:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void draw_minimap(t_game *game, t_map *map, t_player *player) {
                     for (int y = 0; y < cell_size; y++) {
                         for (int x = 0; x < cell_size; x++) 
                         {
-                            if(screen_x + x > minimap_radius && minimap_radius <  screen_y + y)
+                            // if(screen_x + x > minimap_radius && minimap_radius <  screen_y + y)
                                 my_mlx_pixel_put(game->back, screen_x + x , screen_y + y , color);
                         }
                     }

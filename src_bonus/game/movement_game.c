@@ -6,13 +6,13 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:25:41 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/03 14:48:11 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:37:05 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-bool	check_collision_x(t_game *game, int new_pos_x, int new_pos_y)
+bool	check_collision(t_game *game, int new_pos_x, int new_pos_y)
 {
 	if (game->map->map[(int)(new_pos_x + DISTANCE
 			* game->player.dir_x)][(int)game->player.pos_y] == '0'

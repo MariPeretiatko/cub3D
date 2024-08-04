@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 20:59:11 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 17:26:21 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:05:59 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,9 @@ void	update_door_animation(t_game *game)
         if (game->door_offset == TEXWIDTH && game->map->map[door_x][door_y] == 'D')
         {
             game->map->map[door_x][door_y] = 'O'; // Состояние "открыто"
-            // printf("Door at (%d, %d) opened\n", door_x, door_y);
+            printf("Door at (%d, %d) opened\n", door_x, door_y);
+            printf("game->door_offset = %f\n", game->door_offset);
+
         }
     }
     else
@@ -142,6 +144,8 @@ void	update_door_animation(t_game *game)
         {
             game->map->map[door_x][door_y] = 'D'; // Состояние "закрыто"
             printf("Door at (%d, %d) closed\n", door_x, door_y);
+            printf("game->door_offset = %f\n", game->door_offset);
+
         }
     }
 
@@ -273,8 +277,7 @@ void render_door_open(t_game *game, int x, int y)
 }
 void	render_door(t_game *game, int x, int y)
 {
-
-	int texture_x;
+    int texture_x;
     int texture_y;
     int color;
 
@@ -284,20 +287,42 @@ void	render_door(t_game *game, int x, int y)
         texture_x += TEXWIDTH;
     texture_y = (int)game->rc.tex_pos & (TEXHEIGHT - 1);
 
+    // Получаем цвет пикселя из текстуры двери
     color = get_texture_pixel(game->door, texture_x, texture_y);
 
     // Отладочная информация
     // printf("Render door at (%d, %d) with texture coordinates (%d, %d) and color %X\n", x, y, texture_x, texture_y, color);
 
     // Проверка прозрачности цвета
-    if ((color & 0x00FFFFFF) != 0)
-    {
+    // Важно проверить, что цвет не является прозрачным (например, цвет ключевого цвета)
+    if (color != 0x00000000) {
         my_mlx_pixel_put(game->back, x, y, color);
     }
-    else
-    {
+    
+	// int texture_x;
+    // int texture_y;
+    // int color;
+
+    // // Рассчитываем координаты текстуры с учетом смещения двери
+    // texture_x = (int)(game->rc.wall_x * TEXWIDTH) - game->door_offset;
+    // if (texture_x < 0)
+    //     texture_x += TEXWIDTH;
+    // texture_y = (int)game->rc.tex_pos & (TEXHEIGHT - 1);
+
+    // color = get_texture_pixel(game->door, texture_x, texture_y);
+
+    // // Отладочная информация
+    // // printf("Render door at (%d, %d) with texture coordinates (%d, %d) and color %X\n", x, y, texture_x, texture_y, color);
+
+    // // Проверка прозрачности цвета
+    //     my_mlx_pixel_put(game->back, x, y, color);
+    // if ((color & 0x00FFFFFF) != 0)
+    // {
+    // }
+    // else
+    // {
         // printf("Transparent pixel at (%d, %d)\n", x, y);
-    }
+    // }
 	
 	// int texture_x;
     // int texture_y;

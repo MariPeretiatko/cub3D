@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 13:48:06 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:24:43 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,17 @@ typedef struct s_door
 	double offset; // смещение для анимации
 }						t_door;
 
+typedef struct s_shot
+{
+	int is_firing;        // Флаг, указывающий на то, что происходит выстрел
+	float beam_length;    // Текущая длина луча
+	float beam_speed;     // Скорость движения луча
+	int start_x, start_y;
+		// Начальная позиция выстрела (например,позиция оружия)
+	int end_x, end_y;     // Текущая конечная позиция выстрела
+	int max_beam_length;
+}						t_shot;
+
 typedef struct s_game
 {
 	void				*mlx;
@@ -202,8 +213,8 @@ typedef struct s_game
 	t_image				*bfg;
 	t_image				*current_weapon;
 	t_image				*door;
-	int door_x;
-	int door_y;
+	int					door_x;
+	int					door_y;
 	t_image				*open_door;
 	int					show_panel;
 
@@ -216,6 +227,8 @@ typedef struct s_game
 	int					num_doors;
 	int					door_open;
 	double				door_offset;
+
+	t_shot				shot;
 }						t_game;
 
 void					init_texture(t_game *game, t_image **texture,
@@ -233,7 +246,8 @@ void					update_door_animation(t_game *game);
 void					render_door(t_game *game, int x, int y);
 // void					toggle_door(t_game *game);
 void					toggle_door(t_game *game, int x, int y);
-void render_door_open(t_game *game, int x, int y);
+void					render_door_open(t_game *game, int x, int y);
+double	calculate_distance(double x1, double y1, double x2, double y2);
 
 // dataList
 // parsing/list.c
