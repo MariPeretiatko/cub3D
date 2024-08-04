@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 18:49:59 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/02 17:32:04 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:53:07 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static int	mouse_hook(int keycode, int x, int y, t_game *game)
 		return (0);
 	}
 	if (keycode == KEY_MOUSE_LEFT)
+	{
+		start_shot(game);
 		printf("%d KEY_MOUSE_LEFT\n", keycode);
+	}
 	if (keycode == KEY_MOUSE_RIGHT)
 		printf("%d KEY_MOUSE_RIGHT\n", keycode);
 	if (keycode == MOUSE_SDOWN)
