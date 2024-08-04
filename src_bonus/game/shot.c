@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:14:38 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 20:41:25 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:53:48 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ float	calculate_max_beam_length(int map_width, int map_height)
 
 bool is_collision(t_game *game, int beam_x, int beam_y) {
     // Преобразуем координаты луча в координаты карты
-    int map_x = beam_x / TILE_SIZE;
-    int map_y = beam_y / TILE_SIZE;
+    int map_x = beam_x / TEXWIDTH;
+    int map_y = beam_y / TEXWIDTH;
 
     // Проверка границ карты
     if (map_x < 0 || map_x >= game->map->width || map_y < 0 || map_y >= game->map->height) {
@@ -28,7 +28,7 @@ bool is_collision(t_game *game, int beam_x, int beam_y) {
     }
 
     // Проверка клетки карты на наличие препятствия
-    if (game->map[map_x][map_y] == WALL_TILE) {
+    if (game->map->map[map_x][map_y] == '1') {
         return true; // Столкновение с препятствием
     }
 
@@ -71,12 +71,12 @@ void	update_shot(t_game *game)
 
 void	draw_shot(t_game *game)
 {
-	if (game->beam.is_firing)
+	if (game->shot.is_firing)
 	{
-		int x = game->beam.start_x;
-		int y = game->beam.start_y;
-		int end_x = game->beam.end_x;
-		int end_y = game->beam.end_y;
+		int x = game->shot.start_x;
+		int y = game->shot.start_y;
+		int end_x = game->shot.end_x;
+		int end_y = game->shot.end_y;
 
 		// Алгоритм Брезенхема для рисования линии
 		int dx = abs(end_x - x);
@@ -89,7 +89,7 @@ void	draw_shot(t_game *game)
 		{
 			// Рисуем пиксель луча
 			my_mlx_pixel_put(game->back, x, y, 0xFFFFFF); // Цвет белый,
-				можно изменить
+				// можно изменить
 
 			// Если достигли конца луча, выходим из цикла
 			if (x == end_x && y == end_y)

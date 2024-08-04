@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 19:24:43 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:53:19 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,9 @@ void					render_door(t_game *game, int x, int y);
 void					toggle_door(t_game *game, int x, int y);
 void					render_door_open(t_game *game, int x, int y);
 double	calculate_distance(double x1, double y1, double x2, double y2);
+void	draw_shot(t_game *game);
+void	update_shot(t_game *game);
+void	start_shot(t_game *game);
 
 // dataList
 // parsing/list.c
