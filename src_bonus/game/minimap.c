@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 20:39:49 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/08/04 21:15:56 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 	double	wall_y;
 	int		screen_x;
 	int		screen_y;
+	int		pixel_x;
+	int		pixel_y;
 
 	int cell_size = 15;       // Size of each cell in the minimap
 	int minimap_radius = 100; // Radius of the minimap
@@ -48,13 +50,10 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 	minimap_diameter = minimap_radius * 2;
 	minimap_left = minimap_x;
 	minimap_top = minimap_y;
-	// Green color for the minimap background
-	background_color = 0x876a09;
-	background_color = 0x094c59;
+	//bg color for minimap
 	background_color = 0x06343d;
 	// background_color = 0x1a2f33;
 	// background_color = 0x243336;
-	// background_color = 0x192021;
 	// Draw the green background of the minimap
 	for (int y = 0; y < minimap_diameter; y++)
 	{
@@ -70,42 +69,49 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 		}
 	}
 	// Draw walls on the minimap
-for (int i = 0; i < map->height; i++)
-{
-    for (int j = 0; j < map->width; j++)
-    {
-        if (map->map[i][j] == '1')
-        { // Wall
-            // Calculate the wall's position relative to the player
-            wall_x = (j - player->pos_y) * cell_size;
-            wall_y = (i - player->pos_x) * cell_size;
-            // Translate the coordinates to the minimap position
-            screen_x = minimap_left + minimap_radius + (int)wall_x;
-            screen_y = minimap_top + minimap_radius + (int)wall_y;
-            
-            // Check if any part of the wall falls within the minimap circle
-            for (int y = 0; y < cell_size; y++)
-            {
-                for (int x = 0; x < cell_size; x++)
-                {
-                    int pixel_x = screen_x + x;
-                    int pixel_y = screen_y + y;
-                    
-                    // Check if the pixel is within the minimap circle
-                    dx = pixel_x - (minimap_left + minimap_radius);
-                    dy = pixel_y - (minimap_top + minimap_radius);
-                    
-                    if (dx * dx + dy * dy <= minimap_radius * minimap_radius)
-                    {
-                        // Draw the pixel (within the circle)
-                        my_mlx_pixel_put(game->back, pixel_x, pixel_y, 0x000000); // Black color for walls
-                    }
-                }
-            }
-        }
-    }
-}
-
+	for (int i = 0; i < map->height; i++)
+	{
+		for (int j = 0; j < map->width; j++)
+		{
+			if (map->map[i][j] == '1' || map->map[i][j] == 'D'
+				|| map->map[i][j] == 'O')
+			{ // Walls, dors
+				// bg color for dors, walls
+				if (map->map[i][j] == '1')
+					background_color = 0x000000;
+				else if (map->map[i][j] == 'D')
+					background_color = 0x3b2105;
+				else if (map->map[i][j] == 'O')
+					background_color = 0x3a6616;
+				// Calculate the wall's position relative to the player
+				wall_x = (j - player->pos_y) * cell_size;
+				wall_y = (i - player->pos_x) * cell_size;
+				// Translate the coordinates to the minimap position
+				screen_x = minimap_left + minimap_radius + (int)wall_x;
+				screen_y = minimap_top + minimap_radius + (int)wall_y;
+				// Check if any part of the wall falls within the minimap circle
+				for (int y = 0; y < cell_size; y++)
+				{
+					for (int x = 0; x < cell_size; x++)
+					{
+						pixel_x = screen_x + x;
+						pixel_y = screen_y + y;
+						// Check if the pixel is within the minimap circle
+						dx = pixel_x - (minimap_left + minimap_radius);
+						dy = pixel_y - (minimap_top + minimap_radius);
+						if (dx * dx + dy * dy <= minimap_radius
+							* minimap_radius)
+						{
+							// Draw the pixel (within the circle)
+							my_mlx_pixel_put(game->back, pixel_x, pixel_y,
+								background_color);
+							// Black color for walls
+						}
+					}
+				}
+			}
+		}
+	}
 	// Draw player position
 	for (int y = -3; y <= 3; y++)
 	{
@@ -148,7 +154,7 @@ for (int i = 0; i < map->height; i++)
 //             for (int y = 0; y < cell_size; y++) {
 //                 for (int x = 0; x < cell_size; x++) {
 //                     my_mlx_pixel_put(game->back, wall_x - cell_size / 2 + x,
-	// wall_y - cell_size / 2 + y, BLUE);
+// wall_y - cell_size / 2 + y, BLUE);
 //                 }
 //             }
 //         }
@@ -160,11 +166,11 @@ for (int i = 0; i < map->height; i++)
 // 		for (int x = -6; x <= 6; x++)
 // 		{
 // 				// my_mlx_pixel_put(game->back, center_x + x, center_y + y,
-					// REDD);
+// REDD);
 // 			if (x * x + y * y <= 6 * 6)
 // 			{
 // 				my_mlx_pixel_put(game->back, minimap_x + x, minimap_y + y,
-					// REDD);
+// REDD);
 // 			}
 // 		}
 // 	}
@@ -247,7 +253,7 @@ void	render_minimap(t_game *game)
 	// 	for (int x = -6; x <= 6; x++)
 	// 	{
 	// 			// my_mlx_pixel_put(game->back, center_x + x, center_y + y,
-					// REDD);
+	// REDD);
 	// 		if (x * x + y * y <= 6 * 6)
 	// 		{
 	// 			my_mlx_pixel_put(game->back, center_x + x, center_y + y, REDD);
