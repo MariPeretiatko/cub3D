@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 20:29:54 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:39:49 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 	minimap_left = minimap_x;
 	minimap_top = minimap_y;
 	// Green color for the minimap background
-	background_color = 0x00FF00;
+	background_color = 0x876a09;
+	background_color = 0x094c59;
+	background_color = 0x06343d;
+	// background_color = 0x1a2f33;
+	// background_color = 0x243336;
+	// background_color = 0x192021;
 	// Draw the green background of the minimap
 	for (int y = 0; y < minimap_diameter; y++)
 	{
