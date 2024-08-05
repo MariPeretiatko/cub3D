@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:14:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 13:23:34 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:26:22 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,14 @@ bool	error_color(char **rgb, t_map *map, int j)
 		i++;
 	}
 	return (true);
+}
+
+int	define_color(int type)
+{
+	if (type == 'D')
+		return (0x3b2105);
+	else if (type == 'O')
+		return (0x3a6616);
+	else
+		return (0x000000);
 }

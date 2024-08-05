@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 20:53:19 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:26:37 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@
 # define TEXWIDTH 512
 # define TEXHEIGHT 512
 
-# define MINI_CUBE 10
+# define MINI_CUBE 15
 # define MAP_RADIUS 100
+# define MAP_OFFSET 75
 # define EMBLEMSIZE 80
 
 # define DISTANCE 0.2
@@ -235,7 +236,6 @@ void					init_texture(t_game *game, t_image **texture,
 							char *path_texture, int size_texture);
 void					render_gun(t_game *game);
 void					render_weapon(t_game *game);
-void					render_minimap(t_game *game);
 void					draw_minimap(t_game *game, t_map *map,
 							t_player *player);
 t_image					*get_type_weapon(t_game *game);
@@ -288,6 +288,7 @@ int						count_size_array(char **array);
 bool					error_color(char **rgb, t_map *map, int j);
 char					*remove_symb(char *input_string, char symb);
 bool					is_one_or_space(const char *str);
+int						define_color(int type);
 
 // raycasting
 // raycast/raycast.c || render.c
