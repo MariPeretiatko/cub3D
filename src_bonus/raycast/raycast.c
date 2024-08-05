@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:12:07 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/03 16:30:04 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:49:35 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	set_ray_steps(t_game *game)
 	game->rc.hit = 0;
 	while (game->rc.hit == 0)
 	{
-		// if (game->map->map[game->rc.map_x][game->rc.map_y] == 'O')
-		// 	game->rc.hit = 0;
 		if (game->rc.side_dist_x < game->rc.side_dist_y)
 		{
 			game->rc.side_dist_x += game->rc.delta_dist_x;
@@ -75,7 +73,6 @@ void	set_ray_steps(t_game *game)
 		if (game->map->map[game->rc.map_x][game->rc.map_y] == '1'
 			|| game->map->map[game->rc.map_x][game->rc.map_y] == 'D')
 			game->rc.hit = 1;
-		
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/01 22:18:17 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:28:15 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_game(t_map *map)
 		error_exit_map("Failed to allocate memory for game", map);
 	game->map = map;
 	init_mlx_window(game);
-	init_walls(game);
+	init_all_textures(game);
 	init_background(game);
 	init_position_charactor(game);
 	add_plane_characters(game);

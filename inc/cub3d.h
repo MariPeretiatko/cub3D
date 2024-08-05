@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 22:26:37 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 23:02:53 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,13 @@
 # define CEAL 0xf5f5f5
 # define WHITE 0xffffff
 # define BLACK 0x000000
+# define BLACK_ 0x010001
 
 # define RESET "\033[0m"
 # define RED "\033[1;31m"
 
 # define MOVE_SPEED 0.03
 # define ROTATION_SPEED 0.025
-# define DOOR_SPEED 10
-// # define ROTATION_SPEED_MOUSE 0.002
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
@@ -57,7 +56,9 @@
 # define MINI_CUBE 15
 # define MAP_RADIUS 100
 # define MAP_OFFSET 75
-# define EMBLEMSIZE 80
+# define EMBLEMSIZE 100
+# define WEAPON_WIDTH 500
+# define WEAPON_HEIGHT 248
 
 # define DISTANCE 0.2
 # define MIDWID (SCREEN_WIDTH / 2)
@@ -81,9 +82,23 @@
 
 # define KEY_PRESS_MASK KeyPressMask
 # define KEY_RELEASE_MASK KeyReleaseMask
+
+# define DOOR_PATH "textures/door_b.xpm"
+
+# define SHOTGUN_PATH "textures/weapons/shotgun500_248.xpm"
+# define RAILGUN_PATH "textures/weapons/railgun500_248.xpm"
+# define ROCKETL_PATH "textures/weapons/rocketl500_248.xpm"
+# define BFG_PATH "textures/weapons/bfg500_248.xpm"
+
+# define SHOTGUN_E "textures/emblems/shotgun80.xpm"
+# define SHOTGUN_EM "textures/emblems/shotgun1001.xpm"
+# define RAILGUN_E "textures/emblems/railgun80.xpm"
+# define ROCKETL_E "textures/emblems/rocket100-_1_.xpm"
+# define BFG_E "textures/emblems/bfg80.xpm"
+
 # include <X11/keysym.h>
 
-# define PI 3.14
+// # define PI 3.14
 
 enum					e_Weapon
 {
@@ -175,25 +190,6 @@ typedef struct s_pressed
 	bool				space;
 }						t_pressed;
 
-typedef struct s_door
-{
-	int					x;
-	int					y;
-	int is_open;   // 0 - закрыта, 1 - открыта
-	double offset; // смещение для анимации
-}						t_door;
-
-typedef struct s_shot
-{
-	int is_firing;        // Флаг, указывающий на то, что происходит выстрел
-	float beam_length;    // Текущая длина луча
-	float beam_speed;     // Скорость движения луча
-	int start_x, start_y;
-		// Начальная позиция выстрела (например,позиция оружия)
-	int end_x, end_y;     // Текущая конечная позиция выстрела
-	int max_beam_length;
-}						t_shot;
-
 typedef struct s_game
 {
 	void				*mlx;
@@ -207,50 +203,38 @@ typedef struct s_game
 	t_image				*so_img;
 	t_image				*we_img;
 	t_image				*ea_img;
+
 	int					type_weapon;
 	t_image				*railgun;
 	t_image				*shotgun;
 	t_image				*rocketl;
 	t_image				*bfg;
 	t_image				*current_weapon;
-	t_image				*door;
-	int					door_x;
-	int					door_y;
-	t_image				*open_door;
-	int					show_panel;
-
 	t_image				*e_shotgun;
 	t_image				*e_railgun;
 	t_image				*e_rocketl;
 	t_image				*e_bfg;
+	bool				show_panel;
 
-	t_door				*doors;
-	int					num_doors;
-	int					door_open;
-	double				door_offset;
-
-	t_shot				shot;
+	t_image				*door;
+	int					door_x;
+	int					door_y;
+	bool				door_open;
 }						t_game;
 
 void					init_texture(t_game *game, t_image **texture,
 							char *path_texture, int size_texture);
-void					render_gun(t_game *game);
 void					render_weapon(t_game *game);
 void					draw_minimap(t_game *game, t_map *map,
 							t_player *player);
-t_image					*get_type_weapon(t_game *game);
 void					init_doors(t_game *game);
-// void					toggle_door(t_game *game, int door_index);
 void					update_doors(t_game *game, double delta_time);
-void					update_door_animation(t_game *game);
+void					update_status_door(t_game *game);
 void					render_door(t_game *game, int x, int y);
-// void					toggle_door(t_game *game);
 void					toggle_door(t_game *game, int x, int y);
-void					render_door_open(t_game *game, int x, int y);
-double	calculate_distance(double x1, double y1, double x2, double y2);
-void	draw_shot(t_game *game);
-void	update_shot(t_game *game);
-void	start_shot(t_game *game);
+
+void					init_all_textures(t_game *game);
+void					show_panel(t_game *game);
 
 // dataList
 // parsing/list.c

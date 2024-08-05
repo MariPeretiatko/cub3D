@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:05:36 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/31 18:38:57 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:16:25 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	check_map_row_door(t_map *map, const char *row, int *player_count,
 		{
 			if (++(*player_count) > 1)
 				error_exit_map("The player's position symbol is not correct"
-					"the number is incorrect",map);
+					"the number is incorrect", map);
 		}
 		if (!valid_symbol(row[col]))
 			error_exit_map("Invalid character in the map", map);
