@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 22:11:26 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/04 22:29:53 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 	{
 		for (int j = 0; j < map->width; j++)
 		{
+			// if(map->map[i][j] == '1')
+			// 	background_color = 0x000000;
+			// if(map->map[i][j] == 'D')
+			// if(map->map[i][j] == 'O')
+			
 			if (map->map[i][j] == '1' || map->map[i][j] == 'D'
 				|| map->map[i][j] == 'O')
 			{ // Walls, dors

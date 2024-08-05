@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 18:49:59 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/04 20:53:07 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:15:34 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,33 @@
 
 static int	mouse_move(int x, int y, t_game *game);
 static int	mouse_hook(int button, int x, int y, t_game *param);
+static void	scroll_up(t_game *game);
+static void	scroll_down(t_game *game);
 
 void	init_event_mouse(t_game *game)
 {
-	// middle of screen
 	mlx_mouse_hide(game->mlx, game->mlx_win);
 	mlx_mouse_move(game->mlx, game->mlx_win, MIDWID, MIDHG);
 	mlx_hook(game->mlx_win, 6, 1L << 6, mouse_move, game);
 	mlx_mouse_hook(game->mlx_win, mouse_hook, game);
 }
 
-void	scroll_up(t_game *game)
+static int	mouse_hook(int keycode, int x, int y, t_game *game)
+{
+	(void)x;
+	(void)y;
+	if (keycode == KEY_MOUSE_LEFT)
+		printf("%d KEY_MOUSE_LEFT\n", keycode);
+	if (keycode == KEY_MOUSE_RIGHT)
+		printf("%d KEY_MOUSE_RIGHT\n", keycode);
+	if (keycode == MOUSE_SDOWN)
+		scroll_down(game);
+	if (keycode == MOUSE_SUP)
+		scroll_up(game);
+	return (0);
+}
+
+static void	scroll_up(t_game *game)
 {
 	if (game->type_weapon == BFG)
 	{
@@ -34,7 +50,7 @@ void	scroll_up(t_game *game)
 	game->type_weapon++;
 }
 
-void	scroll_down(t_game *game)
+static void	scroll_down(t_game *game)
 {
 	if (game->type_weapon == SHOTGUN)
 	{
@@ -42,28 +58,6 @@ void	scroll_down(t_game *game)
 		return ;
 	}
 	game->type_weapon--;
-}
-static int	mouse_hook(int keycode, int x, int y, t_game *game)
-{
-	(void)x;
-	(void)y;
-	if (game == NULL)
-	{
-		printf("Error in mouse_hook: game is NULL\n");
-		return (0);
-	}
-	if (keycode == KEY_MOUSE_LEFT)
-	{
-		start_shot(game);
-		printf("%d KEY_MOUSE_LEFT\n", keycode);
-	}
-	if (keycode == KEY_MOUSE_RIGHT)
-		printf("%d KEY_MOUSE_RIGHT\n", keycode);
-	if (keycode == MOUSE_SDOWN)
-		scroll_down(game);
-	if (keycode == MOUSE_SUP)
-		scroll_up(game);
-	return (0);
 }
 
 static int	mouse_move(int x, int y, t_game *game)
