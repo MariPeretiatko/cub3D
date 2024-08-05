@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 23:03:52 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/05 23:20:35 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,15 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 {
 	int	wall_x;
 	int	wall_y;
+	int	i;
+	int	j;
 
+	i = -1;
 	draw_minimap_bg_circle(MAP_RADIUS, game->back, 0x06343d);
-	for (int i = 0; i < map->height; i++)
+	while (++i < map->height)
 	{
-		for (int j = 0; j < map->width; j++)
+		j = -1;
+		while (++j < map->width)
 		{
 			if (map->map[i][j] == '1' || map->map[i][j] == 'D'
 				|| map->map[i][j] == 'O')
