@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:30:01 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 17:28:15 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:30:04 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ void	init_game(t_map *map)
 	if (!game)
 		error_exit_map("Failed to allocate memory for game", map);
 	game->map = map;
+	play_music("/home/mperetia/sgoinfre/lasr_github/music/music.mp3");
 	init_mlx_window(game);
 	init_all_textures(game);
 	init_background(game);
 	init_position_charactor(game);
 	add_plane_characters(game);
-	init_event_mouse(game);
 	mlx_loop_hook(game->mlx, render, game);
+	init_event_mouse(game);
 	mlx_hook(game->mlx_win, KEY_PRESS, KEY_PRESS_MASK, key_action, game);
 	mlx_hook(game->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_hook,
 		game);

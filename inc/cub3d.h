@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 23:02:53 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:22:38 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 # include <time.h>
 # include <unistd.h>
 
@@ -83,6 +85,8 @@
 # define KEY_PRESS_MASK KeyPressMask
 # define KEY_RELEASE_MASK KeyReleaseMask
 
+
+
 # define DOOR_PATH "textures/door_b.xpm"
 
 # define SHOTGUN_PATH "textures/weapons/shotgun500_248.xpm"
@@ -90,11 +94,10 @@
 # define ROCKETL_PATH "textures/weapons/rocketl500_248.xpm"
 # define BFG_PATH "textures/weapons/bfg500_248.xpm"
 
-# define SHOTGUN_E "textures/emblems/shotgun80.xpm"
-# define SHOTGUN_EM "textures/emblems/shotgun1001.xpm"
-# define RAILGUN_E "textures/emblems/railgun80.xpm"
+# define SHOTGUN_E "textures/emblems/shotgun1001.xpm"
+# define RAILGUN_E "textures/emblems/railgun100.xpm"
 # define ROCKETL_E "textures/emblems/rocket100-_1_.xpm"
-# define BFG_E "textures/emblems/bfg80.xpm"
+# define BFG_E "textures/emblems/bfg100-_1_.xpm"
 
 # include <X11/keysym.h>
 
@@ -215,6 +218,7 @@ typedef struct s_game
 	t_image				*e_rocketl;
 	t_image				*e_bfg;
 	bool				show_panel;
+	unsigned long long	diff;
 
 	t_image				*door;
 	int					door_x;
@@ -227,14 +231,17 @@ void					init_texture(t_game *game, t_image **texture,
 void					render_weapon(t_game *game);
 void					draw_minimap(t_game *game, t_map *map,
 							t_player *player);
-void					init_doors(t_game *game);
+// void					init_doors(t_game *game);
 void					update_doors(t_game *game, double delta_time);
 void					update_status_door(t_game *game);
 void					render_door(t_game *game, int x, int y);
 void					toggle_door(t_game *game, int x, int y);
 
 void					init_all_textures(t_game *game);
-void					show_panel(t_game *game);
+// void					show_panel(t_game *game);
+int						show_panel(t_game *game);
+void	free_all_textures(t_game *game);
+void	play_music(const char *file_path);
 
 // dataList
 // parsing/list.c

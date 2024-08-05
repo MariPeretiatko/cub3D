@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 23:12:12 by mperetia          #+#    #+#             */
-/*   Updated: 2024/07/26 13:24:20 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 00:28:21 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	free_game(t_game *game)
 		return ;
 	if (game->mlx)
 	{
-		free_image(game->mlx, game->no_img);
-		free_image(game->mlx, game->so_img);
-		free_image(game->mlx, game->we_img);
-		free_image(game->mlx, game->ea_img);
+		free_all_textures(game);
 		if (game->back)
 		{
 			free_image(game->mlx, game->back);

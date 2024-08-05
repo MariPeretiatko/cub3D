@@ -53,6 +53,8 @@ SRCS_BONUS = main.c error.c free.c \
               $(SCRS_FBONUS)game/gun.c \
               $(SCRS_FBONUS)game/minimap.c \
               $(SCRS_FBONUS)game/door.c \
+              $(SCRS_FBONUS)game/show_panel.c \
+              $(SCRS_FBONUS)game/music.c \
                
 
 OBJS        = $(SRCS:%.c=%.o)

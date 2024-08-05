@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 18:49:59 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 19:15:34 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 00:25:22 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static int	mouse_hook(int keycode, int x, int y, t_game *game)
 
 static void	scroll_up(t_game *game)
 {
+	game->show_panel = true;
+	game->diff = 0;
 	if (game->type_weapon == BFG)
 	{
 		game->type_weapon = SHOTGUN;
@@ -52,6 +54,8 @@ static void	scroll_up(t_game *game)
 
 static void	scroll_down(t_game *game)
 {
+	game->show_panel = true;
+	game->diff = 0;
 	if (game->type_weapon == SHOTGUN)
 	{
 		game->type_weapon = BFG;
