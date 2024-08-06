@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 01:22:38 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:01:50 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <time.h>
 # include <unistd.h>
 
@@ -84,8 +84,6 @@
 
 # define KEY_PRESS_MASK KeyPressMask
 # define KEY_RELEASE_MASK KeyReleaseMask
-
-
 
 # define DOOR_PATH "textures/door_b.xpm"
 
@@ -224,6 +222,9 @@ typedef struct s_game
 	int					door_x;
 	int					door_y;
 	bool				door_open;
+
+	char				*music;
+	pid_t				pid;
 }						t_game;
 
 void					init_texture(t_game *game, t_image **texture,
@@ -231,17 +232,14 @@ void					init_texture(t_game *game, t_image **texture,
 void					render_weapon(t_game *game);
 void					draw_minimap(t_game *game, t_map *map,
 							t_player *player);
-// void					init_doors(t_game *game);
 void					update_doors(t_game *game, double delta_time);
 void					update_status_door(t_game *game);
 void					render_door(t_game *game, int x, int y);
 void					toggle_door(t_game *game, int x, int y);
 
 void					init_all_textures(t_game *game);
-// void					show_panel(t_game *game);
 int						show_panel(t_game *game);
-void	free_all_textures(t_game *game);
-void	play_music(const char *file_path);
+void					free_all_textures(t_game *game);
 
 // dataList
 // parsing/list.c

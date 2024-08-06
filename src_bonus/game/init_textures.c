@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 19:54:21 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 00:34:51 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:27:45 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,4 @@ static void	init_weapon_texture(t_game *game, t_image **texture,
 			&(*texture)->endian);
 	if (!(*texture)->addr)
 		error_exit_game("Problem with getting image address", game);
-}
-
-void	free_all_textures(t_game *game)
-{
-	free_image(game->mlx, game->no_img);
-	free_image(game->mlx, game->so_img);
-	free_image(game->mlx, game->we_img);
-	free_image(game->mlx, game->ea_img);
-	free_image(game->mlx, game->railgun);
-	free_image(game->mlx, game->shotgun);
-	free_image(game->mlx, game->rocketl);
-	free_image(game->mlx, game->bfg);
-	free_image(game->mlx, game->e_shotgun);
-	free_image(game->mlx, game->e_railgun);
-	free_image(game->mlx, game->e_rocketl);
-	free_image(game->mlx, game->e_bfg);
-	free_image(game->mlx, game->door);
 }

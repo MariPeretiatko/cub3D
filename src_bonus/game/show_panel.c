@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 00:38:48 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 00:44:31 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:48:05 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void		render_emblems(t_game *game);
 static void		render_emblem(t_game *game, t_image *emblem, int pos_x,
 					int pos_y);
 static t_image	*active_get_type_emblem(t_game *game);
-static void	draw_pixel(t_game *game, int pos_x, int pos_y, int x, int y, int color);
-
+// static void	draw_pixel(t_game *game, int pos_x, int pos_y, int x, int y,
+		int color);
 int	show_panel(t_game *game)
 {
 	struct timeval				tv;
@@ -69,7 +69,7 @@ static void	render_emblem(t_game *game, t_image *emblem, int pos_x, int pos_y)
 			if ((!active && color != YELLOW && color != BLACK
 					&& color != BLACK_) || (active && color != BLACK
 					&& color != BLACK_))
-				draw_pixel(game, pos_x, pos_y, x, y, color);
+				my_mlx_pixel_put(game->back, pos_x + x, pos_y + y, color);
 			y++;
 		}
 		x++;
@@ -88,16 +88,4 @@ static t_image	*active_get_type_emblem(t_game *game)
 		return (game->e_bfg);
 	else
 		return (game->e_shotgun);
-}
-
-static void	draw_pixel(t_game *game, int pos_x, int pos_y, int x, int y, int color)
-{
-	int draw_x;
-	int draw_y;
-
-	draw_x = pos_x + x;
-	draw_y = pos_y + y;
-	if (draw_x >= 0 && draw_x < SCREEN_WIDTH && draw_y >= 0
-		&& draw_y < SCREEN_HEIGHT)
-		my_mlx_pixel_put(game->back, draw_x, draw_y, color);
 }

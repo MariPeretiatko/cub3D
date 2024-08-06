@@ -6,7 +6,7 @@
 /*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 16:05:17 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 00:37:33 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:32:58 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	render(t_game *game)
 	draw_minimap(game, game->map, &game->player);
 	draw_crosshair(game);
 	moves_execute(game);
-	// if (game->show_panel)
 	show_panel(game);
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->back->img, 0, 0);
 	return (0);

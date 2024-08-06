@@ -34,27 +34,26 @@ SRCS        = main.c error.c free.c \
               $(SRCS_F)game/rotate_game.c \
               $(SRCS_F)game/init_walls.c
 
-SRCS_BONUS = main.c error.c free.c \
-              $(SCRS_FBONUS)parsing/list.c \
-              $(SCRS_FBONUS)parsing/utils.c \
-              $(SCRS_FBONUS)parsing/valid_map.c \
-              $(SCRS_FBONUS)parsing/valid_symbols.c \
-              $(SCRS_FBONUS)parsing/init_map.c \
-              $(SCRS_FBONUS)parsing/check_map.c \
-              $(SCRS_FBONUS)raycast/raycast.c \
-              $(SCRS_FBONUS)raycast/render.c \
-              $(SCRS_FBONUS)raycast/utils_raycast.c \
-              $(SCRS_FBONUS)game/init_game.c \
-              $(SCRS_FBONUS)game/input_game.c \
-              $(SCRS_FBONUS)game/movement_game.c \
-              $(SCRS_FBONUS)game/rotate_game.c \
-              $(SCRS_FBONUS)game/init_textures.c \
-              $(SCRS_FBONUS)game/input_mouse.c \
-              $(SCRS_FBONUS)game/gun.c \
-              $(SCRS_FBONUS)game/minimap.c \
-              $(SCRS_FBONUS)game/door.c \
-              $(SCRS_FBONUS)game/show_panel.c \
-              $(SCRS_FBONUS)game/music.c \
+SRCS_BONUS =    $(SCRS_FBONUS)main.c $(SCRS_FBONUS)error.c $(SCRS_FBONUS)free.c \
+                $(SCRS_FBONUS)parsing/list.c \
+                $(SCRS_FBONUS)parsing/utils.c \
+                $(SCRS_FBONUS)parsing/valid_map.c \
+                $(SCRS_FBONUS)parsing/valid_symbols.c \
+                $(SCRS_FBONUS)parsing/init_map.c \
+                $(SCRS_FBONUS)parsing/check_map.c \
+                $(SCRS_FBONUS)raycast/raycast.c \
+                $(SCRS_FBONUS)raycast/render.c \
+                $(SCRS_FBONUS)raycast/utils_raycast.c \
+                $(SCRS_FBONUS)game/init_game.c \
+                $(SCRS_FBONUS)game/input_game.c \
+                $(SCRS_FBONUS)game/movement_game.c \
+                $(SCRS_FBONUS)game/rotate_game.c \
+                $(SCRS_FBONUS)game/init_textures.c \
+                $(SCRS_FBONUS)game/input_mouse.c \
+                $(SCRS_FBONUS)game/gun.c \
+                $(SCRS_FBONUS)game/minimap.c \
+                $(SCRS_FBONUS)game/door.c \
+                $(SCRS_FBONUS)game/show_panel.c \
                
 
 OBJS        = $(SRCS:%.c=%.o)

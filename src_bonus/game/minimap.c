@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:07:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/05 23:20:35 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:26:55 by mperetia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	draw_minimap(t_game *game, t_map *map, t_player *player)
 		j = -1;
 		while (++j < map->width)
 		{
+			if (map->map[i][j] == '\0')
+				break ;
 			if (map->map[i][j] == '1' || map->map[i][j] == 'D'
 				|| map->map[i][j] == 'O')
 			{
