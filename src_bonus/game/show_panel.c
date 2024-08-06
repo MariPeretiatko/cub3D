@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   show_panel.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 00:38:48 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 14:48:05 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:22:09 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static void		render_emblems(t_game *game);
 static void		render_emblem(t_game *game, t_image *emblem, int pos_x,
 					int pos_y);
 static t_image	*active_get_type_emblem(t_game *game);
-// static void	draw_pixel(t_game *game, int pos_x, int pos_y, int x, int y,
-		int color);
+
 int	show_panel(t_game *game)
 {
 	struct timeval				tv;

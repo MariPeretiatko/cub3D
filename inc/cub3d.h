@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:14:28 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 14:01:50 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:34:47 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@
 # define WEAPON_HEIGHT 248
 
 # define DISTANCE 0.2
-# define MIDWID (SCREEN_WIDTH / 2)
-# define MIDHG (SCREEN_HEIGHT / 2)
 
 # define KEY_MOUSE_LEFT 1
 # define KEY_MOUSE_RIGHT 3

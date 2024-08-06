@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_mouse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperetia <mperetia@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 18:49:59 by mperetia          #+#    #+#             */
-/*   Updated: 2024/08/06 00:25:22 by mperetia         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:36:07 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	scroll_down(t_game *game);
 void	init_event_mouse(t_game *game)
 {
 	mlx_mouse_hide(game->mlx, game->mlx_win);
-	mlx_mouse_move(game->mlx, game->mlx_win, MIDWID, MIDHG);
+	mlx_mouse_move(game->mlx, game->mlx_win, SCREEN_WIDTH / 2, SCREEN_HEIGHT
+		/ 2);
 	mlx_hook(game->mlx_win, 6, 1L << 6, mouse_move, game);
 	mlx_mouse_hook(game->mlx_win, mouse_hook, game);
 }
@@ -71,8 +72,9 @@ static int	mouse_move(int x, int y, t_game *game)
 	if (x < SCREEN_WIDTH * 0.1 || x > SCREEN_WIDTH * 0.9 || y < SCREEN_HEIGHT
 		* 0.1 || y > SCREEN_HEIGHT * 0.9)
 	{
-		mlx_mouse_move(game->mlx, game->mlx_win, MIDWID, MIDHG);
-		last_x = MIDWID;
+		mlx_mouse_move(game->mlx, game->mlx_win, SCREEN_WIDTH / 2, SCREEN_HEIGHT
+			/ 2);
+		last_x = SCREEN_WIDTH / 2;
 	}
 	if (last_x < x)
 		rotate_right(game);
