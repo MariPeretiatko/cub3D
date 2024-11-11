@@ -42,4 +42,4 @@ The map is described in a **.cub** file, where:
 
 Example:  
 ```bash
-./cub3D my_map.cub
+./cub3D_bonus maps/minimap_fixing.cub
