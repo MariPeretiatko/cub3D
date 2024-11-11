@@ -27,6 +27,33 @@ The map is described in a **.cub** file, where:
 ### **Error Handling**
 - The program checks for errors in the map configuration (e.g., missing textures, invalid characters) and prints an explicit error message if something goes wrong.
 
+This is an example of a valid map:
+
+```
+NO ./path_to_the_north_texture
+SO ./path_to_the_south_texture
+WE ./path_to_the_west_texture
+EA ./path_to_the_east_texture
+
+F 220,100,0
+C 225,30,0
+
+1111111111111111111111111
+1000000000110000000000001
+1011000001110000000000001
+1001000000000000000000001
+111111111011000001110000000000001
+100000000011000001110111111111111
+11110111111111011100000010001
+11110111111111011101010010001
+11000000110101011100000010001
+10000000000000001100000010001
+10000000000000001101010010001
+11000001110101011111011110N0111
+11110111 1110101 101111010001
+11111111 1111111 111111111111
+```
+
 ### **Bonus Features**
 - **Wall Collisions:** The player interacts with the walls, which block movement.
 - **Minimap:** A small minimap is displayed to help navigate the maze.
@@ -42,4 +69,8 @@ The map is described in a **.cub** file, where:
 
 Example:  
 ```bash
+make bonus
+```
+```bash
 ./cub3D_bonus maps/minimap_fixing.cub
+```
