@@ -46,9 +46,8 @@ static void	init_weapons_emblems(t_game *game)
 void	init_texture(t_game *game, t_image **texture, char *path_texture,
 		int size_texture)
 {
-	int	size;
-
-	size = size_texture;
+	// int	size;
+	// size = size_texture;
 	*texture = ft_calloc(1, sizeof(t_image));
 	(*texture)->img = mlx_xpm_file_to_image(game->mlx, path_texture,
 			&size_texture, &size_texture);

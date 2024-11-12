@@ -123,7 +123,8 @@ static unsigned int	init_colors(char *color_string, t_map *map)
 			if (error_color(rgb, map, i))
 			{
 				colors[i] = ft_atoi(rgb[i]);
-				if (colors[i] < 0 || colors[i] > 255)
+				// if (colors[i] < 0 || colors[i] > 255)
+				if (colors[i] > 255)
 					error_exit_map_array("The range must 0 to 255", map, rgb);
 			}
 			i++;

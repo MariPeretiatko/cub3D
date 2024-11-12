@@ -51,6 +51,8 @@
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
+// # define SCREEN_WIDTH 1280
+// # define SCREEN_HEIGHT 720
 
 # define TEXWIDTH 512
 # define TEXHEIGHT 512
@@ -225,19 +227,7 @@ typedef struct s_game
 	pid_t				pid;
 }						t_game;
 
-void					init_texture(t_game *game, t_image **texture,
-							char *path_texture, int size_texture);
-void					render_weapon(t_game *game);
-void					draw_minimap(t_game *game, t_map *map,
-							t_player *player);
-void					update_doors(t_game *game, double delta_time);
-void					update_status_door(t_game *game);
-void					render_door(t_game *game, int x, int y);
-void					toggle_door(t_game *game, int x, int y);
 
-void					init_all_textures(t_game *game);
-int						show_panel(t_game *game);
-void					free_all_textures(t_game *game);
 
 // dataList
 // parsing/list.c
@@ -260,6 +250,19 @@ bool					valid_symbol_character(char c);
 void					check_map_row_door(t_map *map, const char *row,
 							int *player_count, int row_index);
 void					valid_symbols_door(t_map *map);
+void					init_texture(t_game *game, t_image **texture,
+							char *path_texture, int size_texture);
+void					render_weapon(t_game *game);
+void					draw_minimap(t_game *game, t_map *map,
+							t_player *player);
+void					update_doors(t_game *game, double delta_time);
+void					update_status_door(t_game *game);
+void					render_door(t_game *game, int x, int y);
+void					toggle_door(t_game *game, int x, int y);
+
+void					init_all_textures(t_game *game);
+int						show_panel(t_game *game);
+void					free_all_textures(t_game *game);
 
 // init_map
 // parsing/check_map.c ||
