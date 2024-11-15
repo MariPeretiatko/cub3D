@@ -2,6 +2,9 @@
 
 **cub3D** is a simple pseudo-3D game developed using the **raycasting** algorithm. This project simulates 3D-like graphics in a 2D space, creating an immersive maze-like experience where the player navigates through a world with walls, textures, and customizable floor and ceiling colors.
 
+![Screencast_from_12_11_2024_21_16_11_online_video_cutter_com_ (2) (1)](https://github.com/user-attachments/assets/096adc2d-d050-41a2-aef2-d155e424f4a2)
+
+
 ## Requirements
 
 - **MiniLibX** library for rendering graphics.
